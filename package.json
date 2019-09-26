@@ -1,0 +1,49 @@
+{
+  "name": "@kazakoff/davai-wechat",
+  "version": "1.0.0",
+  "description": "Wechat deploy tools",
+  "main": "src/cli.js",
+  "bin": {
+    "@kazakoff/davai-wechat": "bin/davai-wechat",
+    "davai-wechat": "bin/davai-wechat"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "cli",
+    "wechat-deploy"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiamTorrelli/davai-wechat.git"
+  },
+  "author": "KazakovArtem <a.kazakov@incodewetrust.ru>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LiamTorrelli/davai-wechat/issues"
+  },
+  "homepage": "https://github.com/LiamTorrelli/davai-wechat#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "dependencies": {
+    "arg": "^4.1.1",
+    "chalk": "^2.4.2",
+    "esm": "^3.2.25",
+    "execa": "^2.0.4",
+    "inquirer": "^7.0.0",
+    "listr": "^0.14.3",
+    "mobx": "^5.13.0",
+    "ncp": "^2.0.0",
+    "pkg-install": "^1.0.0",
+    "ramda": "^0.26.1",
+    "shelljs": "^0.8.3"
+  }
+}

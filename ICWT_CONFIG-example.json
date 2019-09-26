@@ -1,0 +1,22 @@
+{
+  "STARTUP_BRANCH": "feature-new-cli",
+  "STARTUP_FILES": [
+    "VERSION",
+    "app.settings.js",
+    "project.config.json",
+    "RELEASES.log"
+  ],
+  "FILES_TO_ADD_THEN_DELETE": ["PRODUCTION.js"],
+  "FILES_TO_UPDATE_WITH_VERSION": [
+    {
+      "fileName": "app.settings.js",
+      "lookingFor": "const APP_VERSION = "
+    },
+    {
+      "fileName": "VERSION",
+      "lookingFor": ""
+    }
+  ],
+  "VERSION_FILE": "VERSION",
+  "DEV_TOOLS_PATH": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli"
+}
