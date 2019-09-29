@@ -10,17 +10,20 @@ import { FilesService } from '../../services/filesService'
 // Helpers
 import { __isEmpty } from '../../helpers/help'
 
-const CONFIG_FILE_PATH = 'ICWT_CONFIG.json'
+const CONFIG_FILE_PATH = 'DAVAI.json'
 
 export const FilesInfoStore = observable({
-  startupFilesExist: false,
-  config: false,
   STARTUP_FILES: [],
   STARTUP_BRANCH: [],
   VERSION_FILE: '',
   DEV_TOOLS_PATH: '',
   FILES_TO_ADD_THEN_DELETE: [],
   FILES_TO_UPDATE_WITH_VERSION: [],
+  GIT_RELEASE_BRANCH_NAME_BASE: '',
+  GIT_RELEASE_TAG_NAME_BASE: '',
+
+  config: false,
+  startupFilesExist: false,
   productionFilesAdded: false,
   noProductionsFilesToAdd: false,
   productionFilesDeleted: false,
@@ -44,14 +47,27 @@ export const FilesInfoStore = observable({
         VERSION_FILE,
         DEV_TOOLS_PATH,
         FILES_TO_ADD_THEN_DELETE,
-        FILES_TO_UPDATE_WITH_VERSION
+        FILES_TO_UPDATE_WITH_VERSION,
+        GIT_RELEASE_BRANCH_NAME_BASE,
+        GIT_RELEASE_TAG_NAME_BASE
       } = config
+
+      if (!STARTUP_FILES
+      || !VERSION_FILE
+      || !DEV_TOOLS_PATH
+      || !FILES_TO_ADD_THEN_DELETE
+      || !FILES_TO_UPDATE_WITH_VERSION
+      || !GIT_RELEASE_BRANCH_NAME_BASE
+      || !GIT_RELEASE_TAG_NAME_BASE
+      ) return logError('Reading config file faild', 'Some params are missing')
 
       this.STARTUP_FILES = STARTUP_FILES
       this.VERSION_FILE = VERSION_FILE
       this.DEV_TOOLS_PATH = DEV_TOOLS_PATH
       this.FILES_TO_ADD_THEN_DELETE = FILES_TO_ADD_THEN_DELETE
       this.FILES_TO_UPDATE_WITH_VERSION = FILES_TO_UPDATE_WITH_VERSION
+      this.GIT_RELEASE_BRANCH_NAME_BASE = GIT_RELEASE_BRANCH_NAME_BASE
+      this.GIT_RELEASE_TAG_NAME_BASE = GIT_RELEASE_TAG_NAME_BASE
 
       try {
         this.startupFilesExist = new FilesService()
@@ -122,7 +138,7 @@ export const FilesInfoStore = observable({
     if (!directory
       || !oldVersion
       || !newVersion
-    ) return logError('Updating Prod Files Version failed:', '(directory||oldVersion||newVersion was not found')
+    ) return logError('Updating Prod Files Version failed:', '(directory | oldVersion | newVersion was not found')
 
     const { FILES_TO_UPDATE_WITH_VERSION } = this
     const updatedSuccessfully = await new FilesService().updateFilesWithVersion(

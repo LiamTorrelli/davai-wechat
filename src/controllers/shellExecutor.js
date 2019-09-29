@@ -35,9 +35,9 @@ export class ShellExecutor {
   }
 
   executeCode(shellParams, isAsync = false) {
-    const { code } = shell.exec(`${shellParams}`, { async: isAsync })
-
-    return code === 0
+    const code = shell.exec(`${shellParams}`, { async: isAsync })
+    console.log('code', code)
+    return code.code === 0 || code.code === 1
   }
 
   paramToObjName(param) {
@@ -76,7 +76,6 @@ export class ShellExecutor {
       initiatorName,
       branchName
     } = this
-    // TODO:
     const releaseBranchRoot = 'testbuild'
     const fullBranchName = `${releaseBranchRoot}-${branchName}`
     try {

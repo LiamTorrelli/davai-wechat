@@ -19,12 +19,26 @@ import {
 
 async function loginWechatDevtools() {
   const { DEV_TOOLS_PATH } = FilesInfoStore
+  const { directory } = ShellArgumentsStore
 
   if (!DEV_TOOLS_PATH) throw new Error('DEV_TOOLS_PATH was not found')
 
-  const { isLoggedIn } = await WechatStore.loginIntoWechat(DEV_TOOLS_PATH)
+  const { isLoggedIn } = await WechatStore.loginIntoWechat({ DEV_TOOLS_PATH, directory })
 
   return isLoggedIn
+}
+
+async function generateWechatPreview() {
+  const { DEV_TOOLS_PATH } = FilesInfoStore
+  const { directory } = ShellArgumentsStore
+  const { releaseActionDate } = ProjectInfoStore
+
+  if (!DEV_TOOLS_PATH) throw new Error('DEV_TOOLS_PATH was not found')
+
+  const { isPreviewGenerated } = await WechatStore
+    .generatePreview({ DEV_TOOLS_PATH, directory, releaseActionDate })
+
+  return isPreviewGenerated
 }
 
 // async function submitWechatRelease(projectInformation) {
@@ -53,16 +67,16 @@ async function loginWechatDevtools() {
 //   // return code === 0
 // }
 
-export async function handleWechatDevtools() {
+export async function handleWechatPreview() {
   const tasksToRun = new Listr([
-    { /*  ** loginWechatDevtools **  */
-      task: () => taskHandler('loginWechatDevtools', loginWechatDevtools),
-      title: tasks['loginWechatDevtools'].title
+    // { /*  ** loginWechatDevtools **  */
+    //   task: () => taskHandler('loginWechatDevtools', loginWechatDevtools),
+    //   title: tasks['loginWechatDevtools'].title
+    // },
+    { /*  ** generateWechatPreview **  */
+      task: () => taskHandler('generateWechatPreview', generateWechatPreview),
+      title: tasks['generateWechatPreview'].title
     }
-    // { /*  ** submitWechatRelease **  */
-    //   task: () => taskHandler('submitWechatRelease', submitWechatRelease),
-    //   title: tasks['submitWechatRelease'].title
-    // }
   ])
 
   await tasksToRun.run()

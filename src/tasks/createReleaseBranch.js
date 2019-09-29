@@ -9,25 +9,30 @@ import { logSuccess } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
 
 // Stores
-import { GitInfoStore, ProjectInfoStore } from '../modules/index'
+import { GitInfoStore, ProjectInfoStore, FilesInfoStore } from '../modules/index'
 
 async function gitCreateBranch() {
   const { newVersion } = ProjectInfoStore
-  return GitInfoStore.switchToAReleaseBranch(newVersion)
+  const { GIT_RELEASE_BRANCH_NAME_BASE } = FilesInfoStore
+
+  return GitInfoStore.switchToAReleaseBranch(
+    GIT_RELEASE_BRANCH_NAME_BASE,
+    newVersion
+  )
 }
 
 /**
  * These are createReleaseBranch tasks. What is happening here?
  *
- ** - 5 gitCreateBranch ->
+ ** - gitCreateBranch ->
  *  - getting the new version [ from ProjectInfoStore ]
  *  - setting the new version [ into GitInfoStore ]
  */
 export async function createReleaseBranch() {
   const tasksToRun = new Listr([
     { /*  ** gitCreateBranch **  */
-      task: () => taskHandler(5, gitCreateBranch),
-      title: tasks[5].title
+      task: () => taskHandler('gitCreateBranch', gitCreateBranch),
+      title: tasks['gitCreateBranch'].title
     }
   ])
 

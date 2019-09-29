@@ -15,44 +15,73 @@ import { __isEmpty } from '../helpers/help'
 import {
   ShellArgumentsStore,
   ProjectInfoStore,
-  GitInfoStore
+  GitInfoStore,
+  FilesInfoStore
 } from '../modules/index'
 
-async function createGithubCommit() {
-  await GitInfoStore.setStatusedFiles()
-  const {
-    releaseType = null,
-    description
-  } = ShellArgumentsStore
-
-  const { newVersion = null, releaseActionDate } = ProjectInfoStore
-
-  const { commitMessage } = await GitInfoStore.createCommitMessage(
-    releaseType,
+async function handleReleaseAction({
+  releaseType,
+  description,
+  newVersion,
+  releaseActionDate
+}) {
+  await GitInfoStore.setReleaseType(releaseType)
+  await GitInfoStore.createCommitMessage({
+    releaseActionDate,
     description,
-    newVersion,
-    releaseActionDate
-  )
+    newVersion
+  })
 
-  if (commitMessage) {
-    const { pushingCommitOutputMsg = false } = await GitInfoStore.pushCommit() || {}
+  const { commitStatus = false } = await GitInfoStore.createCommit() || {}
+
+  if (commitStatus) {
+    const { GIT_RELEASE_BRANCH_NAME_BASE } = FilesInfoStore
+
+    // TODO: When making a release, I need to give the base + version (current branch name has to be swithed)
+    const { pushingCommitOutputMsg = false } = await GitInfoStore
+      .pushCommit(GIT_RELEASE_BRANCH_NAME_BASE) || {}
 
     return pushingCommitOutputMsg
   }
 
-  return logError('Cannot push commit to GIT', 'No commit message')
+  return logError('Cannot push commit to GIT', 'Commit problem')
+}
+
+async function createGithubCommit() {
+  await GitInfoStore.setStatusedFiles()
+
+  const { releaseType = null, description } = ShellArgumentsStore
+  const { newVersion = null, releaseActionDate } = ProjectInfoStore
+
+  const commitType = (releaseType && newVersion) ? 'release' : 'commit'
+
+  await GitInfoStore.setCommitType(commitType)
+
+  if (commitType === 'release') {
+    return handleReleaseAction({
+      releaseType,
+      description,
+      newVersion,
+      releaseActionDate
+    })
+  }
+
+  console.log('commitType not release is NOT READY YET')
+
+  return logError('Cannot create commit', 'No commit message')
 }
 
 async function createBuildTag() {
   const { description } = ShellArgumentsStore
   const { newVersion = null } = ProjectInfoStore
-
   const { creatingTagOutputMsg = false } = await GitInfoStore
     .createTag(description, newVersion) || {}
 
   if (creatingTagOutputMsg) {
+    const { GIT_RELEASE_TAG_NAME_BASE } = FilesInfoStore
+
     const { tagPushStatus = false } = await GitInfoStore
-      .pushTag() || {}
+      .pushTag(GIT_RELEASE_TAG_NAME_BASE) || {}
 
     return tagPushStatus
   }
@@ -63,12 +92,12 @@ async function createBuildTag() {
 export async function submittingChangesToGithub() {
   const tasksToRun = new Listr([
     { /*  ** createGithubCommit **  */
-      task: () => taskHandler(11, createGithubCommit),
-      title: tasks[11].title
+      task: () => taskHandler('createGithubCommit', createGithubCommit),
+      title: tasks['createGithubCommit'].title
     },
     { /*  ** createBuildTag **  */
-      task: () => taskHandler(12, createBuildTag),
-      title: tasks[12].title
+      task: () => taskHandler('createBuildTag', createBuildTag),
+      title: tasks['createBuildTag'].title
     }
   ])
 

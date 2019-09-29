@@ -1,5 +1,6 @@
 {
-  "STARTUP_BRANCH": "feature-new-cli",
+  "DEV_TOOLS_PATH": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli",
+  "STARTUP_BRANCH": "node-integration",
   "STARTUP_FILES": [
     "VERSION",
     "app.settings.js",
@@ -10,7 +11,7 @@
   "FILES_TO_UPDATE_WITH_VERSION": [
     {
       "fileName": "app.settings.js",
-      "lookingFor": "const APP_VERSION = "
+      "lookingFor": "const APP_VERSION ="
     },
     {
       "fileName": "VERSION",
@@ -18,5 +19,6 @@
     }
   ],
   "VERSION_FILE": "VERSION",
-  "DEV_TOOLS_PATH": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli"
+  "GIT_RELEASE_BRANCH_NAME_BASE": "TESTRELEASE",
+  "GIT_RELEASE_TAG_NAME_BASE": "TESTBUILD"
 }

@@ -41,12 +41,12 @@ async function updateProductionFiles() {
 export async function prepareProductionFiles() {
   const tasksToRun = new Listr([
     { /*  ** createProductionFiles **  */
-      task: () => taskHandler(6, createProductionFiles),
-      title: tasks[6].title
+      task: () => taskHandler('createProductionFiles', createProductionFiles),
+      title: tasks['createProductionFiles'].title
     },
     { /*  ** updateProductionFiles **  */
-      task: () => taskHandler(7, updateProductionFiles),
-      title: tasks[7].title
+      task: () => taskHandler('updateProductionFiles', updateProductionFiles),
+      title: tasks['updateProductionFiles'].title
     }
   ])
 

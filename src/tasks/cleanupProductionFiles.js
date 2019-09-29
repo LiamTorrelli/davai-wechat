@@ -25,8 +25,8 @@ async function deleteProductionFiles() {
 export async function cleanupProductionFiles() {
   const tasksToRun = new Listr([
     { /*  ** deleteProductionFiles **  */
-      task: () => taskHandler(10, deleteProductionFiles),
-      title: tasks[10].title
+      task: () => taskHandler('deleteProductionFiles', deleteProductionFiles),
+      title: tasks['deleteProductionFiles'].title
     }
   ])
 

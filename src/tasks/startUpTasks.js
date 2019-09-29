@@ -29,6 +29,11 @@ async function checkStartUpBranch() {
   return currentBranch === STARTUP_BRANCH
 }
 
+async function checkOpenReleases() {
+  const { GIT_RELEASE_BRANCH_NAME_BASE } = FilesInfoStore
+  return GitInfoStore.checkOpenReleases(GIT_RELEASE_BRANCH_NAME_BASE)
+}
+
 async function setGitInfo() {
   GitInfoStore.setStatusedFiles()
   GitInfoStore.setDeveloper()
@@ -39,9 +44,11 @@ async function setGitInfo() {
 async function setProjectInfo() {
   ProjectInfoStore.setReleaseActionDate()
   ProjectInfoStore.setOldVersion(FilesInfoStore.VERSION_FILE)
+
   const { releaseType, description } = ShellArgumentsStore
   ProjectInfoStore.setReleaseType(releaseType)
   ProjectInfoStore.setReleaseDescription(description)
+
   const { newVersion } = ProjectInfoStore.setNewVersion(releaseType) || {}
 
   return newVersion
@@ -49,19 +56,21 @@ async function setProjectInfo() {
 
 /**
  * These are startUp tasks. What is happening here?
- *
- ** - 1 checkIfFilesExist ->
- *  - getting the ICWT_CONFIG.json file [ into FilesInfoStore ]
+ ** - checkIfFilesExist ->
+ *  - getting the DAVAI.json file [ into FilesInfoStore ]
  *  - setting STARTUP_FILES, VERSION_FILE, DEV_TOOLS_PATH [ into FilesInfoStore ]
  *
- ** - 2 checkStartUpBranch ->
+ ** - checkStartUpBranch ->
  *  - getting and setting the current branch name [ in the GitInfoStore ]
  *  - checking whether it equals STARTUP_BRANCH [ from FilesInfoStore ]
  *
- ** - 3 setGitInfo ->
+ ** - checkOpenReleases ->
+ *  - checking whether the repo has other open releases not merged into master
+ *
+ ** - setGitInfo ->
  *  - getting and setting current status and git user [ in the GitInfoStore ]
  *
- ** - 4 setProjectInfo ->
+ ** - setProjectInfo ->
  *  - setting
  *    : release action date
  *    : old & new versions
@@ -71,20 +80,24 @@ async function setProjectInfo() {
 export async function startUpTasks() {
   const tasksToRun = new Listr([
     { /*  ** checkIfFilesExist **  */
-      task: () => taskHandler(1, checkIfFilesExist),
-      title: tasks[1].title
+      task: () => taskHandler('checkIfFilesExist', checkIfFilesExist),
+      title: tasks['checkIfFilesExist'].title
     },
     { /*  ** checkStartUpBranch **  */
-      task: () => taskHandler(2, checkStartUpBranch),
-      title: tasks[2].title
+      task: () => taskHandler('checkStartUpBranch', checkStartUpBranch),
+      title: tasks['checkStartUpBranch'].title
     },
+    // { /*  ** checkOpenReleases **  */
+    //   task: () => taskHandler('checkOpenReleases', checkOpenReleases),
+    //   title: tasks['checkOpenReleases'].title
+    // },
     { /*  ** setGitInfo **  */
-      task: () => taskHandler(3, setGitInfo),
-      title: tasks[3].title
+      task: () => taskHandler('setGitInfo', setGitInfo),
+      title: tasks['setGitInfo'].title
     },
     { /*  ** setProjectInfo **  */
-      task: () => taskHandler(4, setProjectInfo),
-      title: tasks[4].title
+      task: () => taskHandler('setProjectInfo', setProjectInfo),
+      title: tasks['setProjectInfo'].title
     }
   ])
 

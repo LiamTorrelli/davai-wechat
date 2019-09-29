@@ -5,6 +5,7 @@ import { startUpTasks } from './tasks/startUpTasks'
 import { createReleaseBranch } from './tasks/createReleaseBranch'
 import { prepareProductionFiles } from './tasks/prepareProductionFiles'
 import { handleWechatDevtools } from './tasks/handleWechatDevtools'
+import { handleWechatPreview } from './tasks/handleWechatPreview'
 import { cleanupProductionFiles } from './tasks/cleanupProductionFiles'
 import { submittingChangesToGithub } from './tasks/submittingChangesToGithub'
 
@@ -20,12 +21,13 @@ export async function cli(args) {
   try {
     await parseArgumentsIntoOptions(args)
     await promptForMissingOptions()
-    // await startUpTasks()
+    await startUpTasks()
+    await handleWechatPreview()
     // await prepareProductionFiles()
     // await createReleaseBranch()
     // await handleWechatDevtools()
     // await cleanupProductionFiles()
     // await submittingChangesToGithub()
-    logSuccess('THE NEW VERSION IS UPLOADED TO WECHAT!')
-  } catch (error) { logError(error) }
+    logSuccess('THE NEW PREVIEW WAS GENERATED!')
+  } catch (error) { console.log('!!!!!!'); logError(error) }
 }

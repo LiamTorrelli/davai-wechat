@@ -16,6 +16,7 @@ const logAutorun = (msg = '') => {
 
 const logError = (msg = '', err = '') => {
   const parsedError = err.toString().split('Error:').join('') || ' .!..'
+
   console.error(`%s ${msg}\n%s ${parsedError}\n`,
     chalk.red.bold(' ERROR'),
     chalk.bold.red('REASON'))
