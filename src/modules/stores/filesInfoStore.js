@@ -10,7 +10,7 @@ import { FilesService } from '../../services/filesService'
 // Helpers
 import { __isEmpty } from '../../helpers/help'
 
-const CONFIG_FILE_PATH = 'DAVAI.json'
+const CONFIG_FILE_PATH = 'DAVAI-CONFIG.json'
 
 export const FilesInfoStore = observable({
   STARTUP_FILES: [],
