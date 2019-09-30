@@ -16,14 +16,12 @@ export const PREVIEWING = {
   }) {
     const previewBaseAction = `${path.resolve(DEV_TOOLS_PATH)} --preview ${path.resolve(directory)}`
     const pathToPreviewOutput = `${path.resolve(directory, 'DAVAI-INFO/preview-info-output.json')}`
-    const pathToBase64File = `${path.resolve(directory, 'DAVAI-INFO/preview-base-64.txt')}`
-    const pathToFutureImg = `${path.resolve(directory, 'DAVAI-INFO/QR.jpeg')}`
-    const outputQrInfo = `base64@${pathToBase64File}`
-    const compileCondition = `--compile-condition '{"pathName":"${pagePath}","query":"${pageQueryParams}"}'`
     const developerInfoPath = `${path.resolve(directory, 'DAVAI-INFO/preview-params.json')}`
 
+    const compileCondition = `--compile-condition '{"pathName":"${pagePath}","query":"${pageQueryParams}"}'`
+
     const output = shell.exec(
-      `${previewBaseAction} --preview-info-output ${pathToPreviewOutput} --preview-qr-output ${outputQrInfo} ${compileCondition}`,
+      `${previewBaseAction} --preview-info-output ${pathToPreviewOutput} ${compileCondition}`,
       { async: false }
     )
 
@@ -33,8 +31,6 @@ export const PREVIEWING = {
       ErrorMessage: stderr || null,
       result: stdout,
       code,
-      pathToBase64File,
-      pathToFutureImg,
       developerInfoPath,
       pathToPreviewOutput
     }

@@ -37,8 +37,16 @@ const logStoreValues = (store, storeName) => {
       return console.log(chalk.blue.bold(key), value, '\n')
     }
 
+    console.log('HERE', typeof value)
+
     return console.log(`%s ${value}`, chalk.blue.bold(key))
   }, store)
+}
+
+const logObject = obj => {
+  mapObjIndexed((value, key) => {
+    console.log(chalk.blue.bold(key), { value })
+  }, obj)
 }
 
 class _Errors {
@@ -60,6 +68,7 @@ class _Errors {
 export {
   _Errors,
   logError,
+  logObject,
   logSuccess,
   logAutorun,
   logStoreValues
