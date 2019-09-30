@@ -70,6 +70,8 @@ export const WechatStore = observable({
       const {
         code,
         ErrorMessage,
+        pathToBase64File,
+        pathToFutureImg,
         developerInfoPath,
         pathToPreviewOutput
       } = await new WechatService().generatePreview({
@@ -81,9 +83,20 @@ export const WechatStore = observable({
 
       if (code !== 0) throw new Error(ErrorMessage)
 
+      const base64Code = new FilesService()
+        .setFilePath(`${pathToBase64File}`)
+        .contents
+
       const previewOutputInfo = new FilesService()
         .setFilePath(`${pathToPreviewOutput}`)
         .contents
+
+      const imgStr = `data:image/png;base64, ${base64Code}`
+      fs.writeFile(
+        `${pathToFutureImg}`,
+        Buffer.from(imgStr.split(/,\s*/)[1].toString(), 'base64'),
+        err => { if (err) throw new Error('', err) }
+      )
 
       const developerInfo = {
         Developer: cleanUpFromN(developer),
@@ -94,7 +107,7 @@ export const WechatStore = observable({
         ...JSON.parse(previewOutputInfo)
       }
 
-      logObject(developerInfo)
+      // logObject(developerInfo)
 
       fs.writeFile(
         developerInfoPath,
