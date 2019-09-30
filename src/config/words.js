@@ -6,7 +6,7 @@ const tasks = {
 
   checkIfFilesExist: {
     title: '# Checking file(s). Making sure startup file(s) exist(s)',
-    error: '# At least one of the start up files does not exist. Check DAVAI.json'
+    error: '# At least one of the start up files does not exist. Check DAVAI-CONFIG.json'
   },
   checkStartUpBranch: {
     title: '# Checking the branch name.',

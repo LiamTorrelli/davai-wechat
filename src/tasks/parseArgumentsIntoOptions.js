@@ -8,7 +8,8 @@ import { ShellArgumentsStore } from '../modules/index'
  * @param {array} rawArgs
  *
  * Setting in the ShellArgumentsStore:
- *  * type
+ *  * action-type
+ *  * release-type
  *  * description
  *  * directory
  *
@@ -21,10 +22,12 @@ function parseArgumentsIntoOptions(rawArgs) {
    * 1st: the nodeJS bin folder
    * 2nd: the icwt-management bin folder
    * Parsing params:
+   *  --action-type preview|release
    *  --release-type fix|feature
    *  --description "This is a release description"
    */
   const args = arg({
+    '--action-type': Boolean,
     '--release-type': Boolean,
     '--description': Boolean
   }, { argv: rawArgs.slice(2) })
@@ -32,8 +35,9 @@ function parseArgumentsIntoOptions(rawArgs) {
    * If the user did not specify either of the params
    * he will be asked to do so in the cli-view
    */
-  ShellArgumentsStore.setReleaseType(args._[0] || false)
-  ShellArgumentsStore.setDescription(args._[1] || false)
+  ShellArgumentsStore.setActionType(args._[0] || false)
+  ShellArgumentsStore.setReleaseType(args._[1] || false)
+  ShellArgumentsStore.setDescription(args._[2] || false)
   ShellArgumentsStore.setDirectory(process.cwd())
 
   return true

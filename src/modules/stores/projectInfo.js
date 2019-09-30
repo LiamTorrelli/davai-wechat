@@ -16,7 +16,7 @@ export const ProjectInfoStore = observable({
   releaseActionDate: null,
   releaseDescription: null,
   oldVersion: null,
-  newVersion: '1.21.4',
+  newVersion: null,
 
   setProjectInfo(obj) {
     mapObjIndexed((value, key) => {

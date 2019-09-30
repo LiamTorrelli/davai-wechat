@@ -1,12 +1,12 @@
 {
   "DEV_TOOLS_PATH": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli",
-  "STARTUP_BRANCH": "node-integration",
+  "STARTUP_BRANCH": "RELEASE-2.5.2",
   "STARTUP_FILES": [
-    "VERSION",
+    "VERSIONS.log",
     "app.settings.js",
-    "project.config.json",
-    "RELEASES.log"
+    "project.config.json"
   ],
+  "DEFAULT_PAGE_PATH": ["pages/events/index/index"],
   "FILES_TO_ADD_THEN_DELETE": ["PRODUCTION.js"],
   "FILES_TO_UPDATE_WITH_VERSION": [
     {
@@ -14,11 +14,11 @@
       "lookingFor": "const APP_VERSION ="
     },
     {
-      "fileName": "VERSION",
+      "fileName": "VERSIONS.log",
       "lookingFor": ""
     }
   ],
-  "VERSION_FILE": "VERSION",
+  "VERSION_FILE": "VERSIONS.log",
   "GIT_RELEASE_BRANCH_NAME_BASE": "TESTRELEASE",
   "GIT_RELEASE_TAG_NAME_BASE": "TESTBUILD"
 }

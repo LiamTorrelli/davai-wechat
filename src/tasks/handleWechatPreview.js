@@ -30,42 +30,30 @@ async function loginWechatDevtools() {
 
 async function generateWechatPreview() {
   const { DEV_TOOLS_PATH } = FilesInfoStore
-  const { directory } = ShellArgumentsStore
+  const {
+    directory,
+    taskName,
+    pagePath,
+    pageQueryParams
+  } = ShellArgumentsStore
   const { releaseActionDate } = ProjectInfoStore
+  const { developer } = GitInfoStore
 
   if (!DEV_TOOLS_PATH) throw new Error('DEV_TOOLS_PATH was not found')
 
   const { isPreviewGenerated } = await WechatStore
-    .generatePreview({ DEV_TOOLS_PATH, directory, releaseActionDate })
+    .generatePreview({
+      DEV_TOOLS_PATH,
+      directory,
+      releaseActionDate,
+      taskName,
+      pagePath,
+      pageQueryParams,
+      developer
+    })
 
   return isPreviewGenerated
 }
-
-// async function submitWechatRelease(projectInformation) {
-//   const {
-//     version,
-//     releaseType,
-//     releaseDescription,
-//     releaseActionDate,
-//     projectDirectory
-//   } = projectInformation
-
-//   console.log('version', version)
-//   console.log('projectDirectory', projectDirectory)
-// const { code } = shell
-//   .exec(
-//     `${WECHAT_CLI_PATH} -u "${newVersion}@${projectDirectory}" --upload-desc "${releaseDescription}"`,
-//     { async: false }
-//   )
-//   console.log('releaseDescription', releaseDescription)
-//   // const { code } = shell
-//   //   .exec(
-//   //     '/Applications/wechatwebdevtools.app/Contents/MacOS/cli -l;',
-//   //     { async: false }
-//   //   )
-
-//   // return code === 0
-// }
 
 export async function handleWechatPreview() {
   const tasksToRun = new Listr([

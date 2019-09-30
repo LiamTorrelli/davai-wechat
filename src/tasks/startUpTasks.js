@@ -42,22 +42,25 @@ async function setGitInfo() {
 }
 
 async function setProjectInfo() {
-  ProjectInfoStore.setReleaseActionDate()
-  ProjectInfoStore.setOldVersion(FilesInfoStore.VERSION_FILE)
+  const { releaseActionDate } = ProjectInfoStore.setReleaseActionDate()
 
-  const { releaseType, description } = ShellArgumentsStore
-  ProjectInfoStore.setReleaseType(releaseType)
-  ProjectInfoStore.setReleaseDescription(description)
+  const { actionType, releaseType, description } = ShellArgumentsStore
 
-  const { newVersion } = ProjectInfoStore.setNewVersion(releaseType) || {}
+  if (actionType === 'release') {
+    ProjectInfoStore.setOldVersion(FilesInfoStore.VERSION_FILE)
+    ProjectInfoStore.setReleaseType(releaseType)
+    ProjectInfoStore.setReleaseDescription(description)
+    const { newVersion } = ProjectInfoStore.setNewVersion(releaseType) || {}
 
-  return newVersion
+    return newVersion
+  }
+  return releaseActionDate
 }
 
 /**
  * These are startUp tasks. What is happening here?
  ** - checkIfFilesExist ->
- *  - getting the DAVAI.json file [ into FilesInfoStore ]
+ *  - getting the DAVAI-CONFIG.json file [ into FilesInfoStore ]
  *  - setting STARTUP_FILES, VERSION_FILE, DEV_TOOLS_PATH [ into FilesInfoStore ]
  *
  ** - checkStartUpBranch ->
@@ -78,6 +81,8 @@ async function setProjectInfo() {
  *    : release description [ in the ProjectInfoStore ]
  */
 export async function startUpTasks() {
+  const { actionType } = ShellArgumentsStore
+
   const tasksToRun = new Listr([
     { /*  ** checkIfFilesExist **  */
       task: () => taskHandler('checkIfFilesExist', checkIfFilesExist),
@@ -85,12 +90,14 @@ export async function startUpTasks() {
     },
     { /*  ** checkStartUpBranch **  */
       task: () => taskHandler('checkStartUpBranch', checkStartUpBranch),
-      title: tasks['checkStartUpBranch'].title
+      title: tasks['checkStartUpBranch'].title,
+      enabled: () => actionType === 'release'
     },
-    // { /*  ** checkOpenReleases **  */
-    //   task: () => taskHandler('checkOpenReleases', checkOpenReleases),
-    //   title: tasks['checkOpenReleases'].title
-    // },
+    { /*  ** checkOpenReleases **  */
+      task: () => taskHandler('checkOpenReleases', checkOpenReleases),
+      title: tasks['checkOpenReleases'].title,
+      enabled: () => actionType === 'release'
+    },
     { /*  ** setGitInfo **  */
       task: () => taskHandler('setGitInfo', setGitInfo),
       title: tasks['setGitInfo'].title

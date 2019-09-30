@@ -42,12 +42,14 @@ class HumanDate {
 
   humanDateObj(needFull) {
     const date = toTime(this.dateToParse)
+    const timeString = `${addZero(getHour(date, this.lang))}:${addZero(getMinute(date, this.lang))}:00`
 
     return {
       day: day(date, this.lang),
       month: month(date, this.lang, needFull),
       weekDay: weekDay(date, this.lang, needFull),
-      year: getFullYear(date)
+      year: getFullYear(date),
+      time: timeString
     }
   }
 

@@ -5,11 +5,35 @@ import { logAutorun, logStoreValues } from '../../handlers/outputHandler'
 
 export const ShellArgumentsStore = observable({
   directory: null,
+  actionType: null,
+  taskName: null,
+  pagePath: null,
+  pageQueryParams: null,
   releaseType: null,
   description: null,
 
   setDirectory(dir) {
     this.directory = dir
+
+    return this
+  },
+  setActionType(actionType) {
+    this.actionType = actionType
+
+    return this
+  },
+  setTaskName(taskName) {
+    this.taskName = taskName
+
+    return this
+  },
+  setPagePath(pagePath) {
+    this.pagePath = pagePath
+
+    return this
+  },
+  setPageQueryParams(pageQueryParams) {
+    this.pageQueryParams = pageQueryParams
 
     return this
   },
@@ -27,7 +51,11 @@ export const ShellArgumentsStore = observable({
 }, {
   setDirectory: action,
   setReleaseType: action,
-  setDescription: action
+  setDescription: action,
+  setActionType: action,
+  setTaskName: action,
+  setPagePath: action,
+  setPageQueryParams: action
 })
 
 autorun(() => {

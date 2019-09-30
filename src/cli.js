@@ -9,6 +9,8 @@ import { handleWechatPreview } from './tasks/handleWechatPreview'
 import { cleanupProductionFiles } from './tasks/cleanupProductionFiles'
 import { submittingChangesToGithub } from './tasks/submittingChangesToGithub'
 
+import { ShellArgumentsStore } from './modules/index'
+
 // Handlers
 import {
   logError,
@@ -22,12 +24,24 @@ export async function cli(args) {
     await parseArgumentsIntoOptions(args)
     await promptForMissingOptions()
     await startUpTasks()
-    await handleWechatPreview()
-    // await prepareProductionFiles()
-    // await createReleaseBranch()
-    // await handleWechatDevtools()
-    // await cleanupProductionFiles()
-    // await submittingChangesToGithub()
-    logSuccess('THE NEW PREVIEW WAS GENERATED!')
+
+    const { actionType } = await ShellArgumentsStore
+
+    if (actionType === 'preview') {
+      await handleWechatPreview()
+      return logSuccess('THE NEW PREVIEW WAS GENERATED!')
+    }
+
+    if (actionType === 'release') {
+      return 'release flow is not ready yet'
+      // await prepareProductionFiles()
+      // await createReleaseBranch()
+      // await handleWechatDevtools()
+      // await cleanupProductionFiles()
+      // await submittingChangesToGithub()
+      // return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')
+    }
+
+    return logError('DAVAI-WECHAT only supports preview|release')
   } catch (error) { console.log('!!!!!!'); logError(error) }
 }

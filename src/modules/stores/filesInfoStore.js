@@ -21,6 +21,7 @@ export const FilesInfoStore = observable({
   FILES_TO_UPDATE_WITH_VERSION: [],
   GIT_RELEASE_BRANCH_NAME_BASE: '',
   GIT_RELEASE_TAG_NAME_BASE: '',
+  DEFAULT_PAGE_PATH: '',
 
   config: false,
   startupFilesExist: false,
@@ -36,6 +37,18 @@ export const FilesInfoStore = observable({
 
       return this
     } catch (err) { return logError('Getting Configuration File failed:', err) }
+  },
+
+  setDefaultPagePath() {
+    const { config } = this.getConfigurationFile() || {}
+
+    if (!__isEmpty(config)) {
+      const { DEFAULT_PAGE_PATH } = config
+      this.DEFAULT_PAGE_PATH = DEFAULT_PAGE_PATH
+
+      return this
+    }
+    return logError('Setting default page path failed:', 'There was a problem with a config file')
   },
 
   checkFilesExistance() {
