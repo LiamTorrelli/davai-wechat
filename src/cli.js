@@ -4,6 +4,7 @@ import { promptForMissingOptions } from './tasks/promptForMissingOptions'
 import { startUpTasks } from './tasks/startUpTasks'
 import { createReleaseBranch } from './tasks/createReleaseBranch'
 import { prepareProductionFiles } from './tasks/prepareProductionFiles'
+import { pushProductionFilesToPreProd } from './tasks/pushProductionFilesToPreProd'
 import { handleWechatDevtools } from './tasks/handleWechatDevtools'
 import { handleWechatPreview } from './tasks/handleWechatPreview'
 import { handleWechatRelease } from './tasks/handleWechatRelease'
@@ -35,6 +36,7 @@ export async function cli(args) {
 
     if (actionType === 'release') {
       await prepareProductionFiles()
+      await pushProductionFilesToPreProd()
       // await createReleaseBranch()
       // await handleWechatRelease()
       // await handleWechatDevtools()

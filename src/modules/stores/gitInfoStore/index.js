@@ -5,6 +5,7 @@ import { PUSHING } from './pushing'
 import { TAGGING } from './tagging'
 import { MERGING } from './merging'
 import { OTHER } from './other'
+import { STAGING } from './staging'
 
 export {
   SETTING,
@@ -13,5 +14,6 @@ export {
   PUSHING,
   TAGGING,
   MERGING,
-  OTHER
+  OTHER,
+  STAGING
 }

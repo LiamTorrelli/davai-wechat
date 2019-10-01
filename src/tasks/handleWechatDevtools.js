@@ -32,7 +32,7 @@ async function loginWechatDevtools() {
 //     version,
 //     releaseType,
 //     releaseDescription,
-//     releaseActionDate,
+//     actionTime,
 //     projectDirectory
 //   } = projectInformation
 

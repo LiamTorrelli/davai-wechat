@@ -1,14 +1,15 @@
+// Libs
+import shell from 'shelljs'
+
 export const COMMITTING = {
-  async handleCommit(commitMessage) {
-    try {
-      const { code, stdout } = shell.exec(`git commit -m "${commitMessage}"`, { async: false })
+  async commitChanges({ msg }) {
+    const output = shell.exec(`git commit -m "${msg}"`)
+    const { stdout, stderr, code } = output
 
-      if (code === 0) return true
-
-      return stdout.includes('nothing to commit, working tree clean')
-    } catch (err) {
-      console.warn('Handling Commit failed:', err)
-      return false
+    return {
+      ErrorMessage: stderr || null,
+      result: stdout,
+      code
     }
   }
 }

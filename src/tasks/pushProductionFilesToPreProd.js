@@ -47,57 +47,28 @@ import {
 //   return logError('Cannot push commit to GIT', 'Commit problem')
 // }
 
-// async function createGithubCommit() {
-//   await GitInfoStore.setStatusedFiles()
+async function createGithubCommit() {
+  await GitInfoStore.setStatusedFiles()
+  const { actionTime } = ProjectInfoStore
+  const { STARTUP_BRANCH } = FilesInfoStore
+  const commitMsg = await GitInfoStore
+    .createAutoCommitMsg({ actionTime })
 
-//   const { releaseType = null, description } = ShellArgumentsStore
-//   const { newVersion = null, actionTime } = ProjectInfoStore
+  if (commitMsg && STARTUP_BRANCH) {
+    await GitInfoStore.stageFiles()
+    await GitInfoStore.commitChanges(commitMsg)
+    await GitInfoStore.pushCommit(STARTUP_BRANCH)
 
-//   const commitType = (releaseType && newVersion) ? 'release' : 'commit'
-
-//   await GitInfoStore.setCommitType(commitType)
-
-//   if (commitType === 'release') {
-//     return handleReleaseAction({
-//       releaseType,
-//       description,
-//       newVersion,
-//       actionTime
-//     })
-//   }
-
-//   console.log('commitType not release is NOT READY YET')
-
-//   return logError('Cannot create commit', 'No commit message')
-// }
-
-async function createBuildTag() {
-  const { description } = ShellArgumentsStore
-  const { newVersion = null } = ProjectInfoStore
-  const { creatingTagOutputMsg = false } = await GitInfoStore
-    .createTag(description, newVersion) || {}
-
-  if (creatingTagOutputMsg) {
-    const { GIT_RELEASE_TAG_NAME_BASE } = FilesInfoStore
-
-    const { tagPushStatus = false } = await GitInfoStore
-      .pushTag(GIT_RELEASE_TAG_NAME_BASE) || {}
-
-    return tagPushStatus
+    return true
   }
-
-  return logError('Cannot push TAG to GIT', '.!..')
+  return false
 }
 
-export async function submittingChangesToGithub() {
+export async function pushProductionFilesToPreProd() {
   const tasksToRun = new Listr([
     { /*  ** createGithubCommit **  */
       task: () => taskHandler('createGithubCommit', createGithubCommit),
       title: tasks['createGithubCommit'].title
-    },
-    { /*  ** createBuildTag **  */
-      task: () => taskHandler('createBuildTag', createBuildTag),
-      title: tasks['createBuildTag'].title
     }
   ])
 

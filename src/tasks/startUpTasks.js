@@ -62,7 +62,7 @@ async function mergeMasterBranch() {
 }
 
 async function setProjectInfo() {
-  const { releaseActionDate } = ProjectInfoStore.setReleaseActionDate()
+  const { actionTime } = ProjectInfoStore.setReleaseActionDate()
 
   const { actionType, releaseType, description } = ShellArgumentsStore
 
@@ -75,7 +75,7 @@ async function setProjectInfo() {
     return newVersion
   }
 
-  return releaseActionDate
+  return actionTime
 }
 
 /**

@@ -9,7 +9,8 @@ import {
   PUSHING,
   TAGGING,
   MERGING,
-  OTHER
+  OTHER,
+  STAGING
 } from './gitInfoStore/index'
 
 // Handlers
@@ -32,6 +33,7 @@ export const GitInfoStore = observable({
 
   ...SETTING,
   ...COMMITTING,
+  ...STAGING,
   ...BRANCHING,
   ...PUSHING,
   ...TAGGING,
@@ -47,7 +49,8 @@ export const GitInfoStore = observable({
   pushCommit: action,
   createTag: action,
   checkOpenReleases: action,
-  mergeBranch: action
+  mergeBranch: action,
+  stageFiles: action
 })
 
 autorun(() => {

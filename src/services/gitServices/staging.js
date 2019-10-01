@@ -1,15 +1,18 @@
+// Libs
+import shell from 'shelljs'
+
 export const STAGING = {
-  async handleAddFilesToGitStage(allFiles = true) {
+  async addFilesToGitStage(allFiles = true) {
     // TODO: abilty to choose files to add to commit
-    try {
-      const action = allFiles ? 'add .' : 'add .'
+    const action = allFiles ? 'add .' : 'add .'
 
-      const { code } = shell.exec(`git ${action}`, { async: false })
+    const output = shell.exec(`git ${action}`)
+    const { stdout, stderr, code } = output
 
-      return code === 0
-    } catch (err) {
-      console.warn('Handling Adding Files To Git Stage failed:', err)
-      return false
+    return {
+      ErrorMessage: stderr || null,
+      result: stdout,
+      code
     }
   }
 }

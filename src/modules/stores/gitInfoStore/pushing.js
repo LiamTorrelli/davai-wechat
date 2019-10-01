@@ -4,20 +4,21 @@ import { GitService } from '../../../services/gitService'
 // Handlers
 import { logError } from '../../../handlers/outputHandler'
 
+// Helpers
+import { cleanUpFromN } from '../../../helpers/help'
+
 export const PUSHING = {
-
-  async pushCommit(branchNameBase) {
-    console.log('branchNameBase', branchNameBase)
+  async pushCommit(branchName) {
     try {
-      const pushStatus = await new GitService()
-        .handlePushCommit(branchNameBase)
+      const {
+        code,
+        ErrorMessage
+      } = await new GitService().pushCommit(cleanUpFromN(branchName))
 
-      if (!pushStatus) throw new Error('Commiting to GIT failed')
-
-      this.pushingCommitOutputMsg = pushStatus
+      if (code !== 0) throw new Error(ErrorMessage)
 
       return this
-    } catch (err) { return logError('Creating Commit Message failed:', err) }
+    } catch (err) { return logError('Staging files failed:', err) }
   },
 
   async pushTag(tagNameBase) {

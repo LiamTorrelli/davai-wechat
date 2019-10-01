@@ -36,7 +36,7 @@ async function generateWechatPreview() {
     pagePath,
     pageQueryParams
   } = ShellArgumentsStore
-  const { releaseActionDate } = ProjectInfoStore
+  const { actionTime } = ProjectInfoStore
   const { developer } = GitInfoStore
 
   if (!DEV_TOOLS_PATH) throw new Error('DEV_TOOLS_PATH was not found')
@@ -45,7 +45,7 @@ async function generateWechatPreview() {
     .generatePreview({
       DEV_TOOLS_PATH,
       directory,
-      releaseActionDate,
+      actionTime,
       taskName,
       pagePath,
       pageQueryParams,

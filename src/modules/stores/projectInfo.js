@@ -13,7 +13,7 @@ import { logError, logAutorun, logStoreValues } from '../../handlers/outputHandl
 
 export const ProjectInfoStore = observable({
   releaseType: null,
-  releaseActionDate: null,
+  actionTime: null,
   releaseDescription: null,
   oldVersion: null,
   newVersion: null,
@@ -30,11 +30,11 @@ export const ProjectInfoStore = observable({
   },
   setReleaseActionDate() {
     try {
-      const releaseActionDate = new HumanDate(new Date(), 'en')
+      const actionTime = new HumanDate(new Date(), 'en', false)
         .setNeededParam('humanDateObj')
         .neededInfo
 
-      this.releaseActionDate = releaseActionDate
+      this.actionTime = actionTime
       return this
     } catch (err) { return logError('Setting Release Action Date failed:', err) }
   },

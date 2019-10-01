@@ -3,7 +3,9 @@ import {
   isNil,
   isEmpty,
   groupBy,
-  mapObjIndexed
+  mapObjIndexed,
+  uniq,
+  values
 } from 'ramda'
 
 const __isObject = smth => {
@@ -39,7 +41,7 @@ const upTheVersion = (oldVersion, releaseType) => {
 const parseMobxObjectIntoObject = obj => mapObjIndexed((val, k) => ({ val, k }), obj)
 const groupArrayByParam = (arr, params, lookingBy) => groupBy(smth => params.filter(p => p === smth[lookingBy]), arr)
 const findElInArray = (array, element) => array.find(value => value === element)
-const cleanDuplicates = arr => arr.filter((elem, index, self) => self.indexOf(elem))
+const cleanDuplicates = arr => uniq(arr)
 const cleanDuplicatesByProp = (myArr, prop) => myArr.filter((obj, pos) => myArr
   .map(mapObj => mapObj[prop])
   .indexOf(obj[prop]) === pos)
