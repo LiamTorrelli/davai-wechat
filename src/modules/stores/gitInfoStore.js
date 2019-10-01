@@ -8,6 +8,7 @@ import {
   BRANCHING,
   PUSHING,
   TAGGING,
+  MERGING,
   OTHER
 } from './gitInfoStore/index'
 
@@ -34,6 +35,7 @@ export const GitInfoStore = observable({
   ...BRANCHING,
   ...PUSHING,
   ...TAGGING,
+  ...MERGING,
   ...OTHER
 
 }, {
@@ -44,7 +46,8 @@ export const GitInfoStore = observable({
   createCommitMessage: action,
   pushCommit: action,
   createTag: action,
-  checkOpenReleases: action
+  checkOpenReleases: action,
+  mergeBranch: action
 })
 
 autorun(() => {

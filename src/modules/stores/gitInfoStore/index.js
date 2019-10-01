@@ -3,6 +3,7 @@ import { COMMITTING } from './committing'
 import { BRANCHING } from './branching'
 import { PUSHING } from './pushing'
 import { TAGGING } from './tagging'
+import { MERGING } from './merging'
 import { OTHER } from './other'
 
 export {
@@ -11,5 +12,6 @@ export {
   BRANCHING,
   PUSHING,
   TAGGING,
+  MERGING,
   OTHER
 }

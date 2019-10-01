@@ -8,6 +8,9 @@ import { tasks } from '../config/words'
 import { logSuccess, _Errors, logError } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
 
+// Helpers
+import { __isEmpty } from '../helpers/help'
+
 // Stores
 import {
   ProjectInfoStore,
@@ -34,11 +37,28 @@ async function checkOpenReleases() {
   return GitInfoStore.checkOpenReleases(GIT_RELEASE_BRANCH_NAME_BASE)
 }
 
-async function setGitInfo() {
-  GitInfoStore.setStatusedFiles()
-  GitInfoStore.setDeveloper()
+async function setStatusedFiles() {
+  await GitInfoStore.setStatusedFiles()
 
   return true
+}
+
+async function setDeveloper() {
+  await GitInfoStore.setDeveloper()
+
+  return true
+}
+
+async function checkForChanges() {
+  const { statusedFiles } = GitInfoStore
+  // This is only for release action
+  return __isEmpty(statusedFiles)
+}
+
+async function mergeMasterBranch() {
+  const { mergeStatus } = await GitInfoStore.mergeBranch('origin/master')
+  // This is only for release action
+  return mergeStatus
 }
 
 async function setProjectInfo() {
@@ -54,6 +74,7 @@ async function setProjectInfo() {
 
     return newVersion
   }
+
   return releaseActionDate
 }
 
@@ -93,14 +114,29 @@ export async function startUpTasks() {
       title: tasks['checkStartUpBranch'].title,
       enabled: () => actionType === 'release'
     },
+    { /*  ** checkForChanges **  */
+      task: () => taskHandler('checkForChanges', checkForChanges),
+      title: tasks['checkForChanges'].title,
+      enabled: () => actionType === 'release'
+    },
+    { /*  ** mergeMasterBranch **  */
+      task: () => taskHandler('mergeMasterBranch', mergeMasterBranch),
+      title: tasks['mergeMasterBranch'].title,
+      enabled: () => actionType === 'release'
+    },
     { /*  ** checkOpenReleases **  */
       task: () => taskHandler('checkOpenReleases', checkOpenReleases),
       title: tasks['checkOpenReleases'].title,
-      enabled: () => actionType === 'release'
+      enabled: () => false // TODO
     },
-    { /*  ** setGitInfo **  */
-      task: () => taskHandler('setGitInfo', setGitInfo),
-      title: tasks['setGitInfo'].title
+    { /*  ** setDeveloper **  */
+      task: () => taskHandler('setDeveloper', setDeveloper),
+      title: tasks['setDeveloper'].title
+    },
+    { /*  ** setStatusedFiles **  */
+      task: () => taskHandler('setStatusedFiles', setStatusedFiles),
+      title: tasks['setStatusedFiles'].title,
+      enabled: () => actionType === 'preview'
     },
     { /*  ** setProjectInfo **  */
       task: () => taskHandler('setProjectInfo', setProjectInfo),

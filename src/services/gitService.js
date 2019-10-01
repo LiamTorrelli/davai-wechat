@@ -1,6 +1,7 @@
 // Functions
 import {
   BRANCHING,
+  MERGING,
   COMMITTING,
   OTHER,
   PUSHING,
@@ -16,4 +17,5 @@ export class GitService {
   createBranch(args) { return BRANCHING.createBranch(args) }
   fetchHistory() { return OTHER.fetchHistory() }
   getOpenPRs() { return BRANCHING.getOpenPRs() }
+  mergeBranch(args) { return MERGING.mergeBranch(args) }
 }

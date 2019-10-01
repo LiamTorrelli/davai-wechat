@@ -6,6 +6,7 @@ import { createReleaseBranch } from './tasks/createReleaseBranch'
 import { prepareProductionFiles } from './tasks/prepareProductionFiles'
 import { handleWechatDevtools } from './tasks/handleWechatDevtools'
 import { handleWechatPreview } from './tasks/handleWechatPreview'
+import { handleWechatRelease } from './tasks/handleWechatRelease'
 import { cleanupProductionFiles } from './tasks/cleanupProductionFiles'
 import { submittingChangesToGithub } from './tasks/submittingChangesToGithub'
 
@@ -33,15 +34,17 @@ export async function cli(args) {
     }
 
     if (actionType === 'release') {
-      return 'release flow is not ready yet'
       // await prepareProductionFiles()
       // await createReleaseBranch()
+      // await handleWechatRelease()
       // await handleWechatDevtools()
       // await cleanupProductionFiles()
       // await submittingChangesToGithub()
-      // return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')
+      return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')
     }
 
     return logError('DAVAI-WECHAT only supports preview|release')
   } catch (error) { console.log('!!!!!!'); logError(error) }
+
+  return logError('How did you get here?')
 }
