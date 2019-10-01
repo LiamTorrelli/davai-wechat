@@ -114,6 +114,10 @@ export async function startUpTasks() {
       title: tasks['checkStartUpBranch'].title,
       enabled: () => actionType === 'release'
     },
+    { /*  ** setStatusedFiles **  */
+      task: () => taskHandler('setStatusedFiles', setStatusedFiles),
+      title: tasks['setStatusedFiles'].title
+    },
     { /*  ** checkForChanges **  */
       task: () => taskHandler('checkForChanges', checkForChanges),
       title: tasks['checkForChanges'].title,
@@ -132,11 +136,6 @@ export async function startUpTasks() {
     { /*  ** setDeveloper **  */
       task: () => taskHandler('setDeveloper', setDeveloper),
       title: tasks['setDeveloper'].title
-    },
-    { /*  ** setStatusedFiles **  */
-      task: () => taskHandler('setStatusedFiles', setStatusedFiles),
-      title: tasks['setStatusedFiles'].title,
-      enabled: () => actionType === 'preview'
     },
     { /*  ** setProjectInfo **  */
       task: () => taskHandler('setProjectInfo', setProjectInfo),

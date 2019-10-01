@@ -1,24 +1,30 @@
 {
   "DEV_TOOLS_PATH": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli",
-  "STARTUP_BRANCH": "RELEASE-2.5.2",
+  "STARTUP_BRANCH": "PRE-PROD",
   "STARTUP_FILES": [
     "VERSIONS.log",
     "app.settings.js",
-    "project.config.json"
+    "project.config.json",
+    "package.json"
   ],
   "DEFAULT_PAGE_PATH": ["pages/events/index/index"],
   "FILES_TO_ADD_THEN_DELETE": ["PRODUCTION.js"],
   "FILES_TO_UPDATE_WITH_VERSION": [
     {
       "fileName": "app.settings.js",
-      "lookingFor": "const APP_VERSION ="
+      "lookingFor": "const APP_VERSION_PROD ="
     },
     {
       "fileName": "VERSIONS.log",
       "lookingFor": ""
+    },
+    {
+      "fileName": "package.json",
+      "lookingFor": "version",
+      "isJson": true
     }
   ],
   "VERSION_FILE": "VERSIONS.log",
-  "GIT_RELEASE_BRANCH_NAME_BASE": "TESTRELEASE",
-  "GIT_RELEASE_TAG_NAME_BASE": "TESTBUILD"
+  "GIT_RELEASE_BRANCH_NAME_BASE": "WHZN",
+  "GIT_RELEASE_TAG_NAME_BASE": "WHZN-BUILD"
 }

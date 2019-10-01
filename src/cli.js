@@ -34,7 +34,7 @@ export async function cli(args) {
     }
 
     if (actionType === 'release') {
-      // await prepareProductionFiles()
+      await prepareProductionFiles()
       // await createReleaseBranch()
       // await handleWechatRelease()
       // await handleWechatDevtools()
