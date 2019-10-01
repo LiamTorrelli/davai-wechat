@@ -5,7 +5,7 @@ import Listr from 'listr'
 import { tasks } from '../config/words'
 
 // Handlers
-import { logSuccess, _Errors, logError } from '../handlers/outputHandler'
+import { logSuccess, logInfo, logError } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
 
 // Helpers
@@ -102,6 +102,8 @@ async function setProjectInfo() {
  *    : release description [ in the ProjectInfoStore ]
  */
 export async function startUpTasks() {
+  logInfo('Start up tasks')
+
   const { actionType } = ShellArgumentsStore
 
   const tasksToRun = new Listr([
@@ -145,7 +147,7 @@ export async function startUpTasks() {
 
   await tasksToRun.run()
     .catch(err => {
-      console.log('\n')
+      console.log('\n\n')
       logError('Start up tasks failed:', err)
       process.exit(1)
     })

@@ -5,7 +5,7 @@ import Listr from 'listr'
 import { tasks } from '../config/words'
 
 // Handlers
-import { logSuccess, _Errors, logError } from '../handlers/outputHandler'
+import { logSuccess, logInfo, logError } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
 
 // Stores
@@ -56,6 +56,8 @@ async function generateWechatPreview() {
 }
 
 export async function handleWechatRelease() {
+  logInfo('Handle WeChat release')
+
   const tasksToRun = new Listr([
     // { /*  ** loginWechatDevtools **  */
     //   task: () => taskHandler('loginWechatDevtools', loginWechatDevtools),
@@ -69,7 +71,7 @@ export async function handleWechatRelease() {
 
   await tasksToRun.run()
     .catch(err => {
-      console.log('\n')
+      console.log('\n\n')
       logError('Handling Wechat Devtools failed:', err)
       process.exit(1)
     })

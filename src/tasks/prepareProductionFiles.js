@@ -5,7 +5,7 @@ import Listr from 'listr'
 import { tasks } from '../config/words'
 
 // Handlers
-import { logSuccess, logError } from '../handlers/outputHandler'
+import { logSuccess, logError, logInfo } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
 
 // Stores
@@ -39,6 +39,8 @@ async function updateProductionFiles() {
 }
 
 export async function prepareProductionFiles() {
+  logInfo('Prepare production files')
+
   const tasksToRun = new Listr([
     { /*  ** createProductionFiles **  */
       task: () => taskHandler('createProductionFiles', createProductionFiles),
@@ -52,7 +54,7 @@ export async function prepareProductionFiles() {
 
   await tasksToRun.run()
     .catch(err => {
-      console.log('\n')
+      console.log('\n\n')
       logError('Preparing production files failed:', err)
       process.exit(1)
     })

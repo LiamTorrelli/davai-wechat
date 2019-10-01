@@ -5,7 +5,7 @@ import Listr from 'listr'
 import { tasks } from '../config/words'
 
 // Handlers
-import { logSuccess, logError } from '../handlers/outputHandler'
+import { logSuccess, logError, logInfo } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
 
 // Stores
@@ -23,6 +23,8 @@ async function deleteProductionFiles() {
 }
 
 export async function cleanupProductionFiles() {
+  logInfo('Clean up production files')
+
   const tasksToRun = new Listr([
     { /*  ** deleteProductionFiles **  */
       task: () => taskHandler('deleteProductionFiles', deleteProductionFiles),
@@ -32,7 +34,7 @@ export async function cleanupProductionFiles() {
 
   await tasksToRun.run()
     .catch(err => {
-      console.log('\n')
+      console.log('\n\n')
       logError('Cleaning up production files failed:', err)
       process.exit(1)
     })

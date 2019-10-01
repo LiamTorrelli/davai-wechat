@@ -5,7 +5,7 @@ import Listr from 'listr'
 import { tasks } from '../config/words'
 
 // Handlers
-import { logSuccess, logError } from '../handlers/outputHandler'
+import { logSuccess, logError, logInfo } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
 
 // Helpers
@@ -13,39 +13,10 @@ import { __isEmpty } from '../helpers/help'
 
 // Stores
 import {
-  ShellArgumentsStore,
   ProjectInfoStore,
   GitInfoStore,
   FilesInfoStore
 } from '../modules/index'
-
-// async function handleReleaseAction({
-//   releaseType,
-//   description,
-//   newVersion,
-//   actionTime
-// }) {
-//   await GitInfoStore.setReleaseType(releaseType)
-//   await GitInfoStore.createCommitMessage({
-//     actionTime,
-//     description,
-//     newVersion
-//   })
-
-//   const { commitStatus = false } = await GitInfoStore.createCommit() || {}
-
-//   if (commitStatus) {
-//     const { GIT_RELEASE_BRANCH_NAME_BASE } = FilesInfoStore
-
-//     // TODO: When making a release, I need to give the base + version (current branch name has to be swithed)
-//     const { pushingCommitOutputMsg = false } = await GitInfoStore
-//       .pushCommit(GIT_RELEASE_BRANCH_NAME_BASE) || {}
-
-//     return pushingCommitOutputMsg
-//   }
-
-//   return logError('Cannot push commit to GIT', 'Commit problem')
-// }
 
 async function createGithubCommit() {
   await GitInfoStore.setStatusedFiles()
@@ -65,6 +36,8 @@ async function createGithubCommit() {
 }
 
 export async function pushProductionFilesToPreProd() {
+  logInfo('Push production files to PRE-PROD')
+
   const tasksToRun = new Listr([
     { /*  ** createGithubCommit **  */
       task: () => taskHandler('createGithubCommit', createGithubCommit),
@@ -74,7 +47,7 @@ export async function pushProductionFilesToPreProd() {
 
   await tasksToRun.run()
     .catch(err => {
-      console.log('\n')
+      console.log('\n\n')
       logError('Submitting changes to GitHub failed:', err)
       process.exit(1)
     })

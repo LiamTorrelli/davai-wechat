@@ -5,7 +5,7 @@ import Listr from 'listr'
 import { tasks } from '../config/words'
 
 // Handlers
-import { logSuccess } from '../handlers/outputHandler'
+import { logSuccess, logInfo, logError } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
 
 // Stores
@@ -29,6 +29,8 @@ async function gitCreateBranch() {
  *  - setting the new version [ into GitInfoStore ]
  */
 export async function createReleaseBranch() {
+  logInfo('Create release branch')
+
   const tasksToRun = new Listr([
     { /*  ** gitCreateBranch **  */
       task: () => taskHandler('gitCreateBranch', gitCreateBranch),
@@ -38,7 +40,7 @@ export async function createReleaseBranch() {
 
   await tasksToRun.run()
     .catch(err => {
-      console.log('\n')
+      console.log('\n\n')
       logError('Create release branch tasks failed:', err)
       process.exit(1)
     })
