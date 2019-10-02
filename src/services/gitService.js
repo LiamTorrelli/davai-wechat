@@ -21,4 +21,7 @@ export class GitService {
   addFilesToGitStage(args) { return STAGING.addFilesToGitStage(args) }
   commitChanges(args) { return COMMITTING.commitChanges(args) }
   pushCommit(args) { return PUSHING.pushCommit(args) }
+  pushReleaseTag(args) { return PUSHING.pushReleaseTag(args) }
+  pushAfterMerge(args) { return PUSHING.pushAfterMerge(args) }
+  createGitTag(args) { return TAGGING.createGitTag(args) }
 }

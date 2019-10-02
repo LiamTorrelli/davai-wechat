@@ -26,11 +26,13 @@ async function createGithubCommit() {
     .createAutoCommitMsg({ actionTime })
 
   if (commitMsg && STARTUP_BRANCH) {
-    await GitInfoStore.stageFiles()
-    await GitInfoStore.commitChanges(commitMsg)
-    await GitInfoStore.pushCommit(STARTUP_BRANCH)
+    try {
+      await GitInfoStore.stageFiles()
+      await GitInfoStore.commitChanges(commitMsg)
+      await GitInfoStore.pushCommit({ branchName: STARTUP_BRANCH })
 
-    return true
+      return true
+    } catch (err) { console.warn('failed:', err); return false }
   }
   return false
 }

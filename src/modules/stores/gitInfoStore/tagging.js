@@ -9,16 +9,30 @@ import { cleanUpFromN } from '../../../helpers/help'
 
 export const TAGGING = {
 
-  async createTag(description, version) {
-    if (!description || !version) return logError('Creating Tag failed:', 'No description or version')
+  async createTag({
+    tagNameBase,
+    version,
+    description
+  }) {
+    if (!description || !version || !tagNameBase) return logError(
+      'Creating Tag failed:',
+      'No description or version or tag name base'
+    )
 
     try {
-      const tagName = `${cleanUpFromN(version)}`
+      const tagName = `${tagNameBase}-${cleanUpFromN(version)}`
 
-      const tagCreated = await new GitService()
-        .handleCreateGitTag(cleanUpFromN(description), tagName)
+      const {
+        code,
+        ErrorMessage
+      } = await new GitService()
+        .createGitTag({
+          description: cleanUpFromN(description),
+          tagName
+        })
 
-      this.creatingTagOutputMsg = tagCreated
+      if (code !== 0) throw new Error(ErrorMessage)
+
       this.tagName = tagName
 
       return this

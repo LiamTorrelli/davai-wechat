@@ -8,6 +8,7 @@ import { pushProductionFilesToPreProd } from './tasks/pushProductionFilesToPrePr
 import { handleWechatDevtools } from './tasks/handleWechatDevtools'
 import { handleWechatPreview } from './tasks/handleWechatPreview'
 import { handleWechatRelease } from './tasks/handleWechatRelease'
+import { pushReleaseTag } from './tasks/pushReleaseTag'
 import { cleanupProductionFiles } from './tasks/cleanupProductionFiles'
 import { submittingChangesToGithub } from './tasks/submittingChangesToGithub'
 
@@ -37,9 +38,9 @@ export async function cli(args) {
     if (actionType === 'release') {
       await prepareProductionFiles()
       await pushProductionFilesToPreProd()
-      // await createReleaseBranch()
+      await createReleaseBranch()
       // await handleWechatRelease()
-      // await handleWechatDevtools()
+      await pushReleaseTag()
       // await cleanupProductionFiles()
       // await submittingChangesToGithub()
       return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')

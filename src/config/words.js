@@ -48,6 +48,18 @@ const tasks = {
     title: '# Creating a release branch',
     error: '# There was an error while creating a release branch'
   },
+  mergePreProdBranch: {
+    title: '# Merging PRE-PROD branch into a new release branch',
+    error: '# There was an error while Merging PRE-PROD branch into a new release branch'
+  },
+  gitCreateTag: {
+    title: '# Creating release tag',
+    error: '# There was an error while Creating release tag'
+  },
+  handlePushTag: {
+    title: '# Pushing release tag',
+    error: '# There was an error while Pushing release tag'
+  },
   generateWechatPreview: {
     title: '# Generate preview in WeChat Devtools',
     error: '# There was an error while Generating preview in WeChat Devtools'

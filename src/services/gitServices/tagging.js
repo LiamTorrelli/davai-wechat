@@ -1,10 +1,16 @@
+import shell from 'shelljs'
+
 export const TAGGING = {
 
-  async handleCreateGitTag(description, tagName) {
-    const status = await new ShellExecutor()
-      .executeCode(`git tag -a "${tagName}" -m "TEST: ${description}"`)
+  async createGitTag({ description, tagName }) {
+    const output = shell.exec(`git tag -a "${tagName}" -m "${description}"`)
+    const { stdout, stderr, code } = output
 
-    return status
+    return {
+      ErrorMessage: stderr || null,
+      result: stdout,
+      code
+    }
   }
 
 }
