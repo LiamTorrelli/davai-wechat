@@ -44,6 +44,10 @@ const tasks = {
     title: '# Updating production files with new version',
     error: '# There was an error while Updating production files with new version'
   },
+  updateFilesWithVersionAfterRelease: {
+    title: '# Updating files with new version after release',
+    error: '# There was an error while Updating files with new version after release'
+  },
   gitCreateBranch: {
     title: '# Creating a release branch',
     error: '# There was an error while creating a release branch'
@@ -59,6 +63,10 @@ const tasks = {
   handlePushTag: {
     title: '# Pushing release tag',
     error: '# There was an error while Pushing release tag'
+  },
+  commitAfterPushingTag: {
+    title: '# Committing after release is done',
+    error: '# There was an error while Committing after release is done'
   },
   generateWechatPreview: {
     title: '# Generate preview in WeChat Devtools',

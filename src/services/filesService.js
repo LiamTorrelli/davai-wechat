@@ -14,12 +14,12 @@ export class FilesService {
     return filesStatuses.filter(v => !v).indexOf(false) !== 0
   }
 
-  updateFilesWithVersion(
+  updateFilesWithVersion({
     filesToWrite,
     directory,
     oldVersion,
     newVersion
-  ) {
+  }) {
     if (!filesToWrite
       || !directory
       || !oldVersion
@@ -45,6 +45,13 @@ export class FilesService {
           ...file,
           lookingFor: `${file.lookingFor}`,
           replacement: '',
+          oneLineFile: false
+        }
+      } else if (newFile.isReadme) {
+        newFile = {
+          ...file,
+          lookingFor: `${file.lookingFor}${oldVersion}`.split('\n').join(''),
+          replacement: `${file.lookingFor}${newVersion}`.split('\n').join(''),
           oneLineFile: false
         }
       } else {

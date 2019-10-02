@@ -32,7 +32,7 @@ export const PUSHING = {
   async pushReleaseTag({ tagName }) {
     if (!tagName) throw new Error('Handling Pushing tag failed, no tag name found')
 
-    const output = shell.exec(`git push --set-upstream origin ${tagName}`)
+    const output = shell.exec(`git push origin ${tagName}`)
     const { stdout, stderr, code } = output
 
     return {

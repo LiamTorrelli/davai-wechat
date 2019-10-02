@@ -2,13 +2,15 @@
 import { GitService } from '../../../services/gitService'
 
 // Handlers
-import { logError } from '../../../handlers/outputHandler'
+import { logError, logThis } from '../../../handlers/outputHandler'
 
 // Helpers
 import { cleanUpFromN } from '../../../helpers/help'
 
 export const PUSHING = {
   async pushCommit({ branchName }) {
+    logThis('Wait...', `PUSHING COMMIT ON BRANCH [ ${branchName} ]`)
+
     try {
       const {
         code,

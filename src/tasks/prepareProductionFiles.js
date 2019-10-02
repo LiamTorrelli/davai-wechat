@@ -29,13 +29,14 @@ async function updateProductionFiles() {
   const { oldVersion, newVersion } = ProjectInfoStore
   const { directory } = ShellArgumentsStore
 
-  const { productionFilesUpdated } = await FilesInfoStore.updateProdFilesWithVersion(
+  const { filesUpdatedWithVersion } = await FilesInfoStore.updateFilesWithVersion({
     directory,
     oldVersion,
-    newVersion
-  )
+    newVersion,
+    type: 'production'
+  })
 
-  return productionFilesUpdated
+  return filesUpdatedWithVersion
 }
 
 export async function prepareProductionFiles() {

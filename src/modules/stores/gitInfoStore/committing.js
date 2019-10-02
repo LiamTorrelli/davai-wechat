@@ -2,7 +2,7 @@
 import { GitService } from '../../../services/gitService'
 
 // Handlers
-import { logError } from '../../../handlers/outputHandler'
+import { logError, logThis } from '../../../handlers/outputHandler'
 
 // Helpers
 import {
@@ -16,6 +16,8 @@ import { statusLetters } from '../../../config/otherWords/gitStatusNames'
 
 export const COMMITTING = {
   async commitChanges(msg) {
+    logThis(msg, 'COMMITING')
+
     try {
       const {
         result,
@@ -23,10 +25,11 @@ export const COMMITTING = {
         ErrorMessage
       } = await new GitService().commitChanges({ msg })
 
-      if (code !== 0) throw new Error(ErrorMessage)
+      if (code !== 0
+        && !result.includes('nothing to commit, working tree clean')
+      ) throw new Error(ErrorMessage)
 
       this.commitStatus = result
-
       return this
     } catch (err) { return logError('Committing changes failed:', err) }
   },
@@ -93,46 +96,17 @@ export const COMMITTING = {
     return message
   },
 
-  async createCommitMessage({
+  async createReleaseMsg({
     actionTime = null,
-    description = null,
-    newVersion = null
-  }) {
-    if (!actionTime) return logError('Creating Commit Message failed:', 'No date')
-
-    const { commitType } = this
-
-    if (commitType === 'release' && description && newVersion) {
-      const { releaseType } = this
-
-      const message = await this.createReleaseCommitMessage({
-        releaseType,
-        description,
-        newVersion,
-        actionTime
-      })
-
-      if (!message) return logError('Creating Commit Message failed:', 'No message was constructed')
-
-      this.commitMessage = message
-
-      return this
-    }
-
-    if (commitType !== 'release' && description) {
-      // TODO: Make a normal commit
-      console.log('Normal commit function is not ready yet')
-    }
-
-    return logError('Creating Commit Message failed', 'TODO: Make a normal commit')
-  },
-
-  async createReleaseCommitMessage({
     releaseType = null,
     newVersion = null,
-    actionTime,
-    description
+    description = null
   }) {
+    if (!actionTime || !releaseType || !newVersion || !description) return logError(
+      'Creating release Message failed:',
+      'No date or release type or new version or description'
+    )
+
     const {
       day,
       month,
@@ -163,5 +137,4 @@ export const COMMITTING = {
 
     return message
   }
-
 }

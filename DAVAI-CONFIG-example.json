@@ -5,7 +5,8 @@
     "VERSIONS.log",
     "app.settings.js",
     "project.config.json",
-    "package.json"
+    "package.json",
+    "README.md"
   ],
   "DEFAULT_PAGE_PATH": ["pages/events/index/index"],
   "FILES_TO_ADD_THEN_DELETE": ["PRODUCTION.js"],
@@ -22,6 +23,13 @@
       "fileName": "package.json",
       "lookingFor": "version",
       "isJson": true
+    }
+  ],
+  "FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE": [
+    {
+      "fileName": "README.md",
+      "lookingFor": "## PRODUCTION RELEASE-",
+      "isReadme": true
     }
   ],
   "VERSION_FILE": "VERSIONS.log",

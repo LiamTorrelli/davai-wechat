@@ -39,10 +39,9 @@ export async function cli(args) {
       await prepareProductionFiles()
       await pushProductionFilesToPreProd()
       await createReleaseBranch()
-      // await handleWechatRelease()
+      // // await handleWechatRelease()
       await pushReleaseTag()
-      // await cleanupProductionFiles()
-      // await submittingChangesToGithub()
+      // // await cleanupProductionFiles()
       return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')
     }
 

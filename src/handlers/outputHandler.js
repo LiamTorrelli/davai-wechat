@@ -20,9 +20,14 @@ const logError = (msg = '', err = '') => {
   console.error(`%s ${msg}\n%s ${parsedError}\n`,
     chalk.red.bold(' ERROR'),
     chalk.bold.red('REASON'))
+  process.exit(0)
 }
 const logSuccess = (msg = '') => console.log(`%s ${msg}`, chalk.green.bold('DONE'))
 const logInfo = (msg = '') => console.log(`\n%s ${msg}\n`, chalk.cyan.bold('STARTED'))
+const logThis = (msg = '', key) => {
+  console.log('\n', chalk.yellow.bold(key), '\n')
+  console.log(`${msg}\n`)
+}
 
 const logStoreValues = (store, storeName) => {
   console.log(`\n%s[ ${storeName} ]\n`, chalk.white.bold('Logging store: '))
@@ -68,6 +73,7 @@ class _Errors {
 
 export {
   _Errors,
+  logThis,
   logInfo,
   logError,
   logObject,
