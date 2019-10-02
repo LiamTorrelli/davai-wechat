@@ -10,15 +10,27 @@ const tasks = {
   },
   checkStartUpBranch: {
     title: '# Checking the branch name.',
-    error: '# You should be on the [ integration ] branch'
+    error: '# You should be on the pre production branch'
+  },
+  mergeMasterBranch: {
+    title: '# Merging master into pre-prod branch',
+    error: '# Merging master into pre-prod branch failed'
   },
   checkOpenReleases: {
     title: '# Checking other open releases',
     error: '# You should not have other open releases not merged into master'
   },
-  setGitInfo: {
-    title: '# Setting GIT info',
-    error: '# There was an error while getting git info'
+  checkForChanges: {
+    title: '# Checking for the current changes localy',
+    error: '# You should not have any local changes at this point'
+  },
+  setStatusedFiles: {
+    title: '# Setting GIT status files',
+    error: '# There was an error while setting git status files'
+  },
+  setDeveloper: {
+    title: '# Setting GIT developer name',
+    error: '# There was an error while setting git developer name'
   },
   setProjectInfo: {
     title: '# Setting the VERSION and other project info',
@@ -35,6 +47,18 @@ const tasks = {
   gitCreateBranch: {
     title: '# Creating a release branch',
     error: '# There was an error while creating a release branch'
+  },
+  mergePreProdBranch: {
+    title: '# Merging PRE-PROD branch into a new release branch',
+    error: '# There was an error while Merging PRE-PROD branch into a new release branch'
+  },
+  gitCreateTag: {
+    title: '# Creating release tag',
+    error: '# There was an error while Creating release tag'
+  },
+  handlePushTag: {
+    title: '# Pushing release tag',
+    error: '# There was an error while Pushing release tag'
   },
   generateWechatPreview: {
     title: '# Generate preview in WeChat Devtools',

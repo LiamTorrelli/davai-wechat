@@ -1,9 +1,10 @@
+// Libs
 import shell from 'shelljs'
 
-export const TAGGING = {
+export const MERGING = {
 
-  async createGitTag({ description, tagName }) {
-    const output = shell.exec(`git tag -a "${tagName}" -m "${description}"`)
+  async mergeBranch(branchName) {
+    const output = shell.exec(`git merge ${branchName}`)
     const { stdout, stderr, code } = output
 
     return {

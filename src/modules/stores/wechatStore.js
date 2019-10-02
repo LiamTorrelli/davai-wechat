@@ -38,7 +38,7 @@ export const WechatStore = observable({
   async generatePreview({
     DEV_TOOLS_PATH,
     directory,
-    releaseActionDate,
+    actionTime,
     taskName,
     pagePath,
     pageQueryParams,
@@ -48,7 +48,7 @@ export const WechatStore = observable({
 
     if (!DEV_TOOLS_PATH
       && !directory
-      && !releaseActionDate
+      && !actionTime
       && !taskName
       && !pagePath
       && !pageQueryParams
@@ -63,7 +63,7 @@ export const WechatStore = observable({
         month,
         year,
         time
-      } = releaseActionDate
+      } = actionTime
 
       const dateString = `${month} ${day} ${year} [${time}]`
 

@@ -36,6 +36,7 @@ export const BRANCHING = {
       if (code !== 0) throw new Error(ErrorMessage)
 
       this.currentBranch = cleanUpFromN(result)
+
       return this
     } catch (err) { return logError('Switching To A Release Branch failed:', err) }
   }

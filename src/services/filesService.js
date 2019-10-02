@@ -30,6 +30,7 @@ export class FilesService {
 
     const isEverythingOk = filesToWrite.map(file => {
       let newFile = { ...file }
+      const resolvedFilePath = path.resolve(directory, newFile.fileName)
 
       if (__isEmpty(file.lookingFor)) {
         // Updating the VERSION (type) file where there is just a plain version
@@ -38,6 +39,13 @@ export class FilesService {
           lookingFor: oldVersion,
           replacement: newVersion,
           oneLineFile: true
+        }
+      } else if (newFile.isJson) {
+        newFile = {
+          ...file,
+          lookingFor: `${file.lookingFor}`,
+          replacement: '',
+          oneLineFile: false
         }
       } else {
         newFile = {
@@ -48,8 +56,10 @@ export class FilesService {
         }
       }
 
-      const linesOfAFile = fs.readFileSync(`${directory}/${newFile.fileName}`, 'utf8').split('\n')
+      const linesWithNoN = fs.readFileSync(resolvedFilePath, 'utf-8')
+      const linesOfAFile = fs.readFileSync(resolvedFilePath, 'utf8').split('\n')
       const allChangedLines = []
+      let changedJson = {}
 
       linesOfAFile.forEach(line => {
         let newLine = line
@@ -63,12 +73,27 @@ export class FilesService {
         foundTheLine.push(false)
       })
 
+      if (newFile.isJson) {
+        const { lookingFor } = newFile
+        const jsonLines = JSON.parse(linesWithNoN)
+
+        changedJson = {
+          ...jsonLines,
+          [lookingFor]: newVersion.split('\n').join('')
+        }
+        fs.writeFileSync(
+          resolvedFilePath,
+          JSON.stringify(changedJson, null, 2),
+          { encoding: 'utf8', flag: 'w+' }
+        )
+        return true
+      }
+
       fs.writeFileSync(
-        `${directory}/${newFile.fileName}`,
+        resolvedFilePath,
         allChangedLines.join(newFile.oneLineFile ? '' : '\n'),
         { encoding: 'utf8', flag: 'w+' }
       )
-
       return foundTheLine.includes(true)
     })
 

@@ -5,8 +5,11 @@ import Listr from 'listr'
 import { tasks } from '../config/words'
 
 // Handlers
-import { logSuccess, _Errors, logError } from '../handlers/outputHandler'
+import { logSuccess, logInfo, logError } from '../handlers/outputHandler'
 import { taskHandler } from '../handlers/taskHandler'
+
+// Helpers
+import { __isEmpty } from '../helpers/help'
 
 // Stores
 import {
@@ -34,15 +37,32 @@ async function checkOpenReleases() {
   return GitInfoStore.checkOpenReleases(GIT_RELEASE_BRANCH_NAME_BASE)
 }
 
-async function setGitInfo() {
-  GitInfoStore.setStatusedFiles()
-  GitInfoStore.setDeveloper()
+async function setStatusedFiles() {
+  await GitInfoStore.setStatusedFiles()
 
   return true
 }
 
+async function setDeveloper() {
+  await GitInfoStore.setDeveloper()
+
+  return true
+}
+
+async function checkForChanges() {
+  const { statusedFiles } = GitInfoStore
+  // This is only for release action
+  return __isEmpty(statusedFiles)
+}
+
+async function mergeMasterBranch() {
+  const { mergeStatus } = await GitInfoStore.mergeBranch('origin/master')
+  // This is only for release action
+  return mergeStatus
+}
+
 async function setProjectInfo() {
-  const { releaseActionDate } = ProjectInfoStore.setReleaseActionDate()
+  const { actionTime } = ProjectInfoStore.setReleaseActionDate()
 
   const { actionType, releaseType, description } = ShellArgumentsStore
 
@@ -54,7 +74,8 @@ async function setProjectInfo() {
 
     return newVersion
   }
-  return releaseActionDate
+
+  return actionTime
 }
 
 /**
@@ -81,6 +102,8 @@ async function setProjectInfo() {
  *    : release description [ in the ProjectInfoStore ]
  */
 export async function startUpTasks() {
+  logInfo('Start up tasks')
+
   const { actionType } = ShellArgumentsStore
 
   const tasksToRun = new Listr([
@@ -93,14 +116,28 @@ export async function startUpTasks() {
       title: tasks['checkStartUpBranch'].title,
       enabled: () => actionType === 'release'
     },
+    { /*  ** setStatusedFiles **  */
+      task: () => taskHandler('setStatusedFiles', setStatusedFiles),
+      title: tasks['setStatusedFiles'].title
+    },
+    { /*  ** checkForChanges **  */
+      task: () => taskHandler('checkForChanges', checkForChanges),
+      title: tasks['checkForChanges'].title,
+      enabled: () => actionType === 'release'
+    },
+    { /*  ** mergeMasterBranch **  */
+      task: () => taskHandler('mergeMasterBranch', mergeMasterBranch),
+      title: tasks['mergeMasterBranch'].title,
+      enabled: () => actionType === 'release'
+    },
     { /*  ** checkOpenReleases **  */
       task: () => taskHandler('checkOpenReleases', checkOpenReleases),
       title: tasks['checkOpenReleases'].title,
-      enabled: () => actionType === 'release'
+      enabled: () => false // TODO
     },
-    { /*  ** setGitInfo **  */
-      task: () => taskHandler('setGitInfo', setGitInfo),
-      title: tasks['setGitInfo'].title
+    { /*  ** setDeveloper **  */
+      task: () => taskHandler('setDeveloper', setDeveloper),
+      title: tasks['setDeveloper'].title
     },
     { /*  ** setProjectInfo **  */
       task: () => taskHandler('setProjectInfo', setProjectInfo),
@@ -110,7 +147,7 @@ export async function startUpTasks() {
 
   await tasksToRun.run()
     .catch(err => {
-      console.log('\n')
+      console.log('\n\n')
       logError('Start up tasks failed:', err)
       process.exit(1)
     })

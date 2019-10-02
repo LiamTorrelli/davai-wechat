@@ -19,57 +19,57 @@ import {
   FilesInfoStore
 } from '../modules/index'
 
-async function handleReleaseAction({
-  releaseType,
-  description,
-  newVersion,
-  releaseActionDate
-}) {
-  await GitInfoStore.setReleaseType(releaseType)
-  await GitInfoStore.createCommitMessage({
-    releaseActionDate,
-    description,
-    newVersion
-  })
+// async function handleReleaseAction({
+//   releaseType,
+//   description,
+//   newVersion,
+//   actionTime
+// }) {
+//   await GitInfoStore.setReleaseType(releaseType)
+//   await GitInfoStore.createCommitMessage({
+//     actionTime,
+//     description,
+//     newVersion
+//   })
 
-  const { commitStatus = false } = await GitInfoStore.createCommit() || {}
+//   const { commitStatus = false } = await GitInfoStore.createCommit() || {}
 
-  if (commitStatus) {
-    const { GIT_RELEASE_BRANCH_NAME_BASE } = FilesInfoStore
+//   if (commitStatus) {
+//     const { GIT_RELEASE_BRANCH_NAME_BASE } = FilesInfoStore
 
-    // TODO: When making a release, I need to give the base + version (current branch name has to be swithed)
-    const { pushingCommitOutputMsg = false } = await GitInfoStore
-      .pushCommit(GIT_RELEASE_BRANCH_NAME_BASE) || {}
+//     // TODO: When making a release, I need to give the base + version (current branch name has to be swithed)
+//     const { pushingCommitOutputMsg = false } = await GitInfoStore
+//       .pushCommit(GIT_RELEASE_BRANCH_NAME_BASE) || {}
 
-    return pushingCommitOutputMsg
-  }
+//     return pushingCommitOutputMsg
+//   }
 
-  return logError('Cannot push commit to GIT', 'Commit problem')
-}
+//   return logError('Cannot push commit to GIT', 'Commit problem')
+// }
 
-async function createGithubCommit() {
-  await GitInfoStore.setStatusedFiles()
+// async function createGithubCommit() {
+//   await GitInfoStore.setStatusedFiles()
 
-  const { releaseType = null, description } = ShellArgumentsStore
-  const { newVersion = null, releaseActionDate } = ProjectInfoStore
+//   const { releaseType = null, description } = ShellArgumentsStore
+//   const { newVersion = null, actionTime } = ProjectInfoStore
 
-  const commitType = (releaseType && newVersion) ? 'release' : 'commit'
+//   const commitType = (releaseType && newVersion) ? 'release' : 'commit'
 
-  await GitInfoStore.setCommitType(commitType)
+//   await GitInfoStore.setCommitType(commitType)
 
-  if (commitType === 'release') {
-    return handleReleaseAction({
-      releaseType,
-      description,
-      newVersion,
-      releaseActionDate
-    })
-  }
+//   if (commitType === 'release') {
+//     return handleReleaseAction({
+//       releaseType,
+//       description,
+//       newVersion,
+//       actionTime
+//     })
+//   }
 
-  console.log('commitType not release is NOT READY YET')
+//   console.log('commitType not release is NOT READY YET')
 
-  return logError('Cannot create commit', 'No commit message')
-}
+//   return logError('Cannot create commit', 'No commit message')
+// }
 
 async function createBuildTag() {
   const { description } = ShellArgumentsStore

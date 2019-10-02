@@ -5,35 +5,100 @@ import { GitService } from '../../../services/gitService'
 import { logError } from '../../../handlers/outputHandler'
 
 // Helpers
-import { cleanUpFromN, getMaxLength } from '../../../helpers/help'
+import {
+  cleanUpFromN,
+  cleanUpSpaces,
+  getMaxLength
+} from '../../../helpers/help'
+
+// Words
+import { statusLetters } from '../../../config/otherWords/gitStatusNames'
 
 export const COMMITTING = {
-
-  async createCommit() {
-    const { commitMessage } = this
+  async commitChanges(msg) {
     try {
-      const filesStaged = await new GitService()
-        .handleAddFilesToGitStage()
+      const {
+        result,
+        code,
+        ErrorMessage
+      } = await new GitService().commitChanges({ msg })
 
-      if (!filesStaged) throw new Error('Staging files failed')
+      if (code !== 0) throw new Error(ErrorMessage)
 
-      const commitStatus = await new GitService()
-        .handleCommit(commitMessage)
-
-      if (!commitStatus) throw new Error('Commiting to GIT failed')
-
-      this.commitStatus = commitStatus
+      this.commitStatus = result
 
       return this
-    } catch (err) { return logError('Creating Commit Message failed:', err) }
+    } catch (err) { return logError('Committing changes failed:', err) }
+  },
+
+  async createAutoCommitMsg({
+    actionTime = null
+  }) {
+    if (!actionTime) return logError('Creating Commit Message failed:', 'No date')
+
+    const { statusedFiles } = this
+
+    let maxLengthFullLine = 0
+    let maxLengthStatus = 0
+    const allStatuses = []
+
+    const filesWithStatus = statusedFiles.split('\n').map(fileName => {
+      const statusName = cleanUpFromN(
+        cleanUpSpaces(
+          `${fileName.charAt(0)}${fileName.charAt(1)}`
+        )
+      )
+      const fileNameNoStatus = cleanUpSpaces(fileName.split(statusName).join(''))
+      const { shortName } = statusLetters[statusName] || {}
+      if (shortName) {
+        const fileLine = `  ${shortName}:  ${fileNameNoStatus}`
+
+        if (fileLine.length > maxLengthFullLine) maxLengthFullLine = fileLine.length
+        if (shortName.length > maxLengthStatus) maxLengthStatus = shortName.length
+
+        allStatuses.push(shortName)
+
+        return {
+          status: shortName,
+          fileName: fileNameNoStatus
+        }
+      }
+    }).filter(v => v)
+
+    const { day, month, time } = actionTime
+    const { developer } = this
+
+    const dateString = `${month} ${day} [ ${time} ]`
+
+    let message = ''
+    let divider = '☐'
+
+    for (let i = 0; i < maxLengthFullLine + 1; i += 1) divider += '-'
+
+    divider += '☐'
+
+    message += `❍ Automatic commit by: ${cleanUpFromN(developer)}\n`
+    message += `${divider}\n`
+
+    for (let i = 0; i < filesWithStatus.length; i += 1) {
+      message += `${filesWithStatus[i].status}`.padStart(maxLengthStatus + 2)
+      message += `:  ${filesWithStatus[i].fileName}\n`
+    }
+
+    message += `${divider}\n`
+    message += `Generated: ${dateString}`
+
+    this.commitMessage = message
+
+    return message
   },
 
   async createCommitMessage({
-    releaseActionDate = null,
+    actionTime = null,
     description = null,
     newVersion = null
   }) {
-    if (!releaseActionDate) return logError('Creating Commit Message failed:', 'No date')
+    if (!actionTime) return logError('Creating Commit Message failed:', 'No date')
 
     const { commitType } = this
 
@@ -44,7 +109,7 @@ export const COMMITTING = {
         releaseType,
         description,
         newVersion,
-        releaseActionDate
+        actionTime
       })
 
       if (!message) return logError('Creating Commit Message failed:', 'No message was constructed')
@@ -54,7 +119,7 @@ export const COMMITTING = {
       return this
     }
 
-    if (commitType === 'release' && description) {
+    if (commitType !== 'release' && description) {
       // TODO: Make a normal commit
       console.log('Normal commit function is not ready yet')
     }
@@ -65,7 +130,7 @@ export const COMMITTING = {
   async createReleaseCommitMessage({
     releaseType = null,
     newVersion = null,
-    releaseActionDate,
+    actionTime,
     description
   }) {
     const {
@@ -73,7 +138,7 @@ export const COMMITTING = {
       month,
       weekDay,
       year
-    } = releaseActionDate
+    } = actionTime
 
     const { developer } = this
 

@@ -1,28 +1,44 @@
+// Libs
+import shell from 'shelljs'
+
 export const PUSHING = {
 
-  async handlePushTag(tagName) {
-    try {
-      const status = await new ShellExecutor()
-        .executeCode(`git push origin "${tagName}"`)
+  async pushCommit({ branchName }) {
+    if (!branchName) throw new Error('Handling Pushing Commit failed, no branch name found')
 
-      return status
-    } catch (err) {
-      console.warn('Handling Pushing Tag failed:', err)
-      return false
+    const output = shell.exec(`git push --set-upstream origin ${branchName}`)
+    const { stdout, stderr, code } = output
+
+    return {
+      ErrorMessage: stderr || null,
+      result: stdout,
+      code
     }
   },
 
-  async handlePushCommit(branchName) {
+  async pushAfterMerge({ branchName }) {
     if (!branchName) throw new Error('Handling Pushing Commit failed, no branch name found')
 
-    try {
-      const status = await new ShellExecutor()
-        .executeCode(`git push origin ${branchName}`)
+    const output = shell.exec(`git push --set-upstream origin ${branchName}`)
+    const { stdout, stderr, code } = output
 
-      return status
-    } catch (err) {
-      console.warn('Handling Pushing Commit failed:', err)
-      return false
+    return {
+      ErrorMessage: stderr || null,
+      result: stdout,
+      code
+    }
+  },
+
+  async pushReleaseTag({ tagName }) {
+    if (!tagName) throw new Error('Handling Pushing tag failed, no tag name found')
+
+    const output = shell.exec(`git push --set-upstream origin ${tagName}`)
+    const { stdout, stderr, code } = output
+
+    return {
+      ErrorMessage: stderr || null,
+      result: stdout,
+      code
     }
   }
 

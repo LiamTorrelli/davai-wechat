@@ -55,8 +55,8 @@ async function generateWechatPreview() {
   return isPreviewGenerated
 }
 
-export async function handleWechatPreview() {
-  logInfo('Handle WeChat Preview')
+export async function handleWechatRelease() {
+  logInfo('Handle WeChat release')
 
   const tasksToRun = new Listr([
     // { /*  ** loginWechatDevtools **  */
