@@ -11,6 +11,7 @@ export const ShellArgumentsStore = observable({
   pageQueryParams: null,
   releaseType: null,
   description: null,
+  newReleaseBranch: null,
 
   setDirectory(dir) {
     this.directory = dir
@@ -46,6 +47,11 @@ export const ShellArgumentsStore = observable({
     this.description = description
 
     return this
+  },
+  setNewReleaseBranch(branch) {
+    this.newReleaseBranch = branch
+
+    return this
   }
 
 }, {
@@ -55,7 +61,8 @@ export const ShellArgumentsStore = observable({
   setActionType: action,
   setTaskName: action,
   setPagePath: action,
-  setPageQueryParams: action
+  setPageQueryParams: action,
+  setNewReleaseBranch: action
 })
 
 autorun(() => {

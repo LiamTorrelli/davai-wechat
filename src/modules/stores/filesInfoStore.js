@@ -23,6 +23,7 @@ export const FilesInfoStore = observable({
   GIT_RELEASE_BRANCH_NAME_BASE: '',
   GIT_RELEASE_TAG_NAME_BASE: '',
   DEFAULT_PAGE_PATH: '',
+  GIT_INTEGRATION_RELEASE_BRANCH_BASE: '',
 
   config: false,
   startupFilesExist: false,
@@ -50,6 +51,18 @@ export const FilesInfoStore = observable({
       return this
     }
     return logError('Setting default page path failed:', 'There was a problem with a config file')
+  },
+
+  setIntegrationReleaseBranchBase() {
+    const { config } = this.getConfigurationFile() || {}
+
+    if (!__isEmpty(config)) {
+      const { GIT_INTEGRATION_RELEASE_BRANCH_BASE } = config
+      this.GIT_INTEGRATION_RELEASE_BRANCH_BASE = GIT_INTEGRATION_RELEASE_BRANCH_BASE
+
+      return this
+    }
+    return logError('Setting integration release branch base failed:', 'There was a problem with a config file')
   },
 
   checkFilesExistance() {
@@ -188,7 +201,8 @@ export const FilesInfoStore = observable({
   getStartupBranch: action,
   addProductionFiles: action,
   deleteProductionFiles: action,
-  updateFilesWithVersion: action
+  updateFilesWithVersion: action,
+  setIntegrationReleaseBranchBase: action
 })
 
 autorun(() => {

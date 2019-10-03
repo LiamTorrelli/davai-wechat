@@ -70,8 +70,6 @@ const logStoreValues = (store, storeName) => {
       return console.log(chalk.blue.bold(key), value, '\n')
     }
 
-    console.log('HERE', typeof value)
-
     return console.log(`%s ${value}`, chalk.blue.bold(key))
   }, store)
 }

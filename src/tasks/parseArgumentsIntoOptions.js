@@ -8,7 +8,7 @@ import { ShellArgumentsStore } from '../modules/index'
  * @param {array} rawArgs
  *
  * Setting in the ShellArgumentsStore:
- *  * action-type
+ *  * action-type [ preview | release | create ]
  *  * release-type
  *  * description
  *  * directory
@@ -29,7 +29,8 @@ function parseArgumentsIntoOptions(rawArgs) {
   const args = arg({
     '--action-type': Boolean,
     '--release-type': Boolean,
-    '--description': Boolean
+    '--description': Boolean,
+    '--new-release-branch': Boolean
   }, { argv: rawArgs.slice(2) })
   /**
    * If the user did not specify either of the params
@@ -38,6 +39,7 @@ function parseArgumentsIntoOptions(rawArgs) {
   ShellArgumentsStore.setActionType(args._[0] || false)
   ShellArgumentsStore.setReleaseType(args._[1] || false)
   ShellArgumentsStore.setDescription(args._[2] || false)
+  ShellArgumentsStore.setNewReleaseBranch(args._[3] || false)
   ShellArgumentsStore.setDirectory(process.cwd())
 
   return true

@@ -52,7 +52,11 @@ export async function cli(args) {
       return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')
     }
 
-    return logError('DAVAI-WECHAT only supports preview|release')
+    if (actionType === 'create') {
+      logStoreValues(ShellArgumentsStore, 'ShellArgumentsStore')
+    }
+
+    return logError('DAVAI-WECHAT only supports preview|release|create')
   } catch (error) { console.log('!!!!!!'); logError(error) }
 
   return logError('How did you get here?')

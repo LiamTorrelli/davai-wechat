@@ -13,6 +13,7 @@
     "ecmaVersion": 2018
   },
   "rules": {
+    "nonblock-statement-body-position": "off",
     "curly": "off",
     "dot-notation": "off",
     "implicit-arrow-linebreak": "off",

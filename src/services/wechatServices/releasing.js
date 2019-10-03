@@ -18,8 +18,9 @@ export const RELEASING = {
      || !releaseDescription
     ) throw new Error('generateRelease could not find needed params')
 
+    const resolvedDevtoolsPath = path.resolve(DEV_TOOLS_PATH).split('\'').join('"')
     const output = shell.exec(
-      `${DEV_TOOLS_PATH} -u ${newVersion}@${directory} --upload-desc '${releaseDescription}'`,
+      `${resolvedDevtoolsPath} -u ${newVersion}@${directory} --upload-desc '${releaseDescription}'`,
       { async: false }
     )
 

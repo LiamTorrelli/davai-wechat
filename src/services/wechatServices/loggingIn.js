@@ -7,8 +7,10 @@ export const LOGGININGIN = {
    * Login Wechat dev tools @return {String || false}
    */
   async loginWechatDevTools({ DEV_TOOLS_PATH, directory }) {
+    const resolvedDevtoolsPath = path.resolve(DEV_TOOLS_PATH).split('\'').join('"')
+
     const output = shell.exec(
-      `${DEV_TOOLS_PATH} -l --login-result-output ${directory}/loginResult.json`,
+      `${resolvedDevtoolsPath} -l --login-result-output ${directory}/loginResult.json`,
       { async: false }
     )
 

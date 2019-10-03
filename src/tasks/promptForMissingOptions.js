@@ -12,7 +12,8 @@ async function promptForMissingOptions() {
     pagePath,
     pageQueryParams,
     releaseType,
-    description
+    description,
+    newReleaseBranch
   } = ShellArgumentsStore
 
   if (actionType === 'preview') {
@@ -72,8 +73,27 @@ async function promptForMissingOptions() {
     ShellArgumentsStore.setDescription(description || answers.releaseDescription)
 
     ShellArgumentsStore.setActionType(actionType || answers.actionType)
+  } else if (actionType === 'create') {
+    const { GIT_INTEGRATION_RELEASE_BRANCH_BASE: branchBase } = await FilesInfoStore.setIntegrationReleaseBranchBase()
+
+    if (!branchBase)
+      throw new Error('Please provide integration release branch base [ GIT_INTEGRATION_RELEASE_BRANCH_BASE ]')
+
+    if (!newReleaseBranch) {
+      questions.push({
+        type: 'input',
+        name: 'newReleaseBranch',
+        message: 'Please provide the new release version (0.0.1)',
+        default: '0.0.0'
+      })
+    }
+    answers = await inquirer.prompt(questions)
+
+    const newReleaseBranchNameFull = `${branchBase}-${answers.newReleaseBranch}`
+    // TODO: check if the version is correct
+    ShellArgumentsStore.setNewReleaseBranch(newReleaseBranch || newReleaseBranchNameFull)
   } else {
-    console.log('davai-wechat only supports preview|release')
+    console.log('davai-wechat only supports preview|release|create')
     process.exit(0)
   }
 

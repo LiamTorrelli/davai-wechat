@@ -14,8 +14,10 @@ export const PREVIEWING = {
     pagePath,
     pageQueryParams
   }) {
+    const resolvedDevtoolsPath = path.resolve(DEV_TOOLS_PATH).split('\'').join('"')
+
     const { code: quitCode } = shell.exec(
-      `${path.resolve(DEV_TOOLS_PATH)} --close ${path.resolve(directory)}`,
+      `${resolvedDevtoolsPath} --close ${path.resolve(directory)}`,
       { async: false }
     )
 
@@ -29,7 +31,7 @@ export const PREVIEWING = {
     // 3 seconds is the time, when wechat prompts a user to quit. 1 second is just to be safe
     await sleep(4000)
 
-    const previewBaseAction = `${path.resolve(DEV_TOOLS_PATH)} --preview ${path.resolve(directory)}`
+    const previewBaseAction = `${resolvedDevtoolsPath} --preview ${path.resolve(directory)}`
     const pathToPreviewOutput = `${path.resolve(directory, 'DAVAI-INFO/preview-info-output.json')}`
     const pathToBase64File = `${path.resolve(directory, 'DAVAI-INFO/preview-base-64.txt')}`
     const pathToFutureImg = `${path.resolve(directory, 'DAVAI-INFO/QR.jpeg')}`
