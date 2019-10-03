@@ -32,7 +32,15 @@
       "isReadme": true
     }
   ],
+  "FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE": [
+    {
+      "fileName": "README.md",
+      "lookingFor": "## DEVELOPMENT RELEASE-",
+      "isNewRelease": true
+    }
+  ],
   "VERSION_FILE": "VERSIONS.log",
-  "GIT_RELEASE_BRANCH_NAME_BASE": "WHZN",
-  "GIT_RELEASE_TAG_NAME_BASE": "WHZN-BUILD"
+  "GIT_RELEASE_BRANCH_NAME_BASE": "WHZN-RELEASE",
+  "GIT_RELEASE_TAG_NAME_BASE": "WHZN-BUILD",
+  "GIT_INTEGRATION_RELEASE_BRANCH_BASE": "RELEASE"
 }
