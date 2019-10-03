@@ -10,6 +10,33 @@ import {
   parseMobxObjectIntoObject
 } from '../helpers/help'
 
+const logICWT = () => {
+  console.log('\n')
+  console.log(chalk.bold.underline.green(' __________   ________  ___                  ___  ______________'))
+  console.log(chalk.bold.underline.green('|___    ___| |   _____| \\  \\                /  / |_____    _____|'))
+  console.log(chalk.bold.underline.green('    |  |     |  |        \\  \\      __      /  /        |  |'))
+  console.log(chalk.bold.underline.cyan('    |  |     |  |         \\  \\    /  \\    /  /         |  |'))
+  console.log(chalk.bold.underline.cyan('    |  |     |  |          \\  \\  /    \\  /  /          |  |'))
+  console.log(chalk.bold.underline.blue('    |  |     |  |           \\  \\/  /\\  \\/  /           |  |'))
+  console.log(chalk.bold.underline.blue(' ___|  |___  |  |_________   \\    /  \\    /            |  |'))
+  console.log(chalk.bold.underline.magenta('|__________| |____________|   \\__/    \\__/             |__|'))
+  console.log('\n')
+}
+
+const logFinish = (msg = '') => {
+  const emptySpacingCount = msg.length / 4
+  let emptySpaces = ''
+  let emptySpacesPart = ''
+
+  for (let i = 0; i <= msg.length + emptySpacingCount; i += 1) emptySpaces += '_'
+  for (let i = 0; i <= emptySpacingCount / 2; i += 1) emptySpacesPart += ' '
+
+  console.log('\n')
+  console.log(chalk.green(emptySpaces), '\n')
+  console.log(chalk.green.bold(`${emptySpacesPart}${msg}${emptySpacesPart}`))
+  console.log(chalk.green(emptySpaces))
+}
+
 const logAutorun = (msg = '') => {
   console.log(chalk.yellowBright.bold(`${msg} store was updated`))
 }
@@ -73,9 +100,11 @@ class _Errors {
 
 export {
   _Errors,
+  logICWT,
   logThis,
   logInfo,
   logError,
+  logFinish,
   logObject,
   logSuccess,
   logAutorun,

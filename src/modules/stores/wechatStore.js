@@ -16,7 +16,7 @@ export const WechatStore = observable({
   isLoggedIn: false,
   isPreviewGenerated: false,
 
-  async loginIntoWechat(DEV_TOOLS_PATH, directory) {
+  async loginIntoWechat({ DEV_TOOLS_PATH, directory }) {
     if (!DEV_TOOLS_PATH && !directory) return logError(
       'Login Wechat Devtools failed:',
       'No DEV_TOOLS_PATH or directory was provided'
@@ -25,7 +25,7 @@ export const WechatStore = observable({
       const {
         code,
         ErrorMessage
-      } = await new WechatService().loginWechatDevTools(DEV_TOOLS_PATH, directory)
+      } = await new WechatService().loginWechatDevTools({ DEV_TOOLS_PATH, directory })
 
       if (code !== 0) throw new Error(ErrorMessage)
 
@@ -119,6 +119,39 @@ export const WechatStore = observable({
 
       return this
     } catch (err) { return logError('Generating preview failed:', err) }
+  },
+
+  async generateRelease({
+    DEV_TOOLS_PATH = null,
+    directory = null,
+    newVersion = null,
+    releaseDescription = null
+  }) {
+    if (!DEV_TOOLS_PATH
+      && !directory
+      && !newVersion
+      && !releaseDescription
+    ) return logError(
+      'Generating Wechat release failed:',
+      'No DEV_TOOLS_PATH or directory was provided'
+    )
+    try {
+      const {
+        code,
+        ErrorMessage
+      } = await new WechatService().generateRelease({
+        DEV_TOOLS_PATH: cleanUpFromN(DEV_TOOLS_PATH),
+        directory: cleanUpFromN(directory),
+        newVersion: cleanUpFromN(newVersion),
+        releaseDescription: cleanUpFromN(releaseDescription)
+      })
+
+      if (code !== 0) throw new Error(ErrorMessage)
+
+      this.isReleaseGenerated = code === 0
+
+      return this
+    } catch (err) { return logError('Generating release failed:', err) }
   }
 
 }, {

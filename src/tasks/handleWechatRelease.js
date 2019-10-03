@@ -11,7 +11,6 @@ import { taskHandler } from '../handlers/taskHandler'
 // Stores
 import {
   ProjectInfoStore,
-  GitInfoStore,
   FilesInfoStore,
   ShellArgumentsStore,
   WechatStore
@@ -28,44 +27,35 @@ async function loginWechatDevtools() {
   return isLoggedIn
 }
 
-async function generateWechatPreview() {
+async function generateWechatRelease() {
   const { DEV_TOOLS_PATH } = FilesInfoStore
-  const {
-    directory,
-    taskName,
-    pagePath,
-    pageQueryParams
-  } = ShellArgumentsStore
-  const { actionTime } = ProjectInfoStore
-  const { developer } = GitInfoStore
+  const { directory } = ShellArgumentsStore
+  const { newVersion, releaseDescription } = ProjectInfoStore
 
   if (!DEV_TOOLS_PATH) throw new Error('DEV_TOOLS_PATH was not found')
 
-  const { isPreviewGenerated } = await WechatStore
-    .generatePreview({
+  const { isReleaseGenerated } = await WechatStore
+    .generateRelease({
       DEV_TOOLS_PATH,
       directory,
-      actionTime,
-      taskName,
-      pagePath,
-      pageQueryParams,
-      developer
+      newVersion,
+      releaseDescription
     })
 
-  return isPreviewGenerated
+  return isReleaseGenerated
 }
 
 export async function handleWechatRelease() {
   logInfo('Handle WeChat release')
 
   const tasksToRun = new Listr([
-    // { /*  ** loginWechatDevtools **  */
-    //   task: () => taskHandler('loginWechatDevtools', loginWechatDevtools),
-    //   title: tasks['loginWechatDevtools'].title
-    // },
-    { /*  ** generateWechatPreview **  */
-      task: () => taskHandler('generateWechatPreview', generateWechatPreview),
-      title: tasks['generateWechatPreview'].title
+    { /*  ** loginWechatDevtools **  */
+      task: () => taskHandler('loginWechatDevtools', loginWechatDevtools),
+      title: tasks['loginWechatDevtools'].title
+    },
+    { /*  ** generateWechatRelease **  */
+      task: () => taskHandler('generateWechatRelease', generateWechatRelease),
+      title: tasks['generateWechatRelease'].title
     }
   ])
 

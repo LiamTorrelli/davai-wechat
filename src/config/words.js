@@ -72,6 +72,10 @@ const tasks = {
     title: '# Generate preview in WeChat Devtools',
     error: '# There was an error while Generating preview in WeChat Devtools'
   },
+  generateWechatRelease: {
+    title: '# Publishing RELEASE into WeChat',
+    error: '# There was an error while publishing code to wechat server'
+  },
   loginWechatDevtools: {
     title: '# Log in WeChat Devtools',
     error: '# There was an error while Logging in WeChat Devtools'

@@ -1,11 +1,14 @@
 // Functions
 import {
   PREVIEWING,
-  LOGGININGIN
+  LOGGININGIN,
+  RELEASING
 } from './wechatServices'
 
 export class WechatService {
-  generatePreview(args) { return PREVIEWING.generatePreview({ ...args }) }
+  generatePreview(args) { return PREVIEWING.generatePreview(args) }
 
-  loginWechatDevTools(args) { return LOGGININGIN.loginWechatDevTools({ ...args }) }
+  generateRelease(args) { return RELEASING.generateRelease(args) }
+
+  loginWechatDevTools(args) { return LOGGININGIN.loginWechatDevTools(args) }
 }

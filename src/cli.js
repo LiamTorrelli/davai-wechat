@@ -12,11 +12,14 @@ import { pushReleaseTag } from './tasks/pushReleaseTag'
 import { cleanupProductionFiles } from './tasks/cleanupProductionFiles'
 import { submittingChangesToGithub } from './tasks/submittingChangesToGithub'
 
-import { ShellArgumentsStore } from './modules/index'
+import { ShellArgumentsStore, ProjectInfoStore } from './modules/index'
+import { cleanUpFromN } from './helpers/help'
 
 // Handlers
 import {
   logError,
+  logFinish,
+  logICWT,
   logSuccess,
   _Errors,
   logStoreValues
@@ -39,8 +42,12 @@ export async function cli(args) {
       await prepareProductionFiles()
       await pushProductionFilesToPreProd()
       await createReleaseBranch()
-      // // await handleWechatRelease()
+      await handleWechatRelease()
       await pushReleaseTag()
+
+      const { newVersion } = ProjectInfoStore
+      logFinish(`RELEASE ${cleanUpFromN(newVersion)} was uploaded to Wechat`)
+      logICWT()
       // // await cleanupProductionFiles()
       return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')
     }
