@@ -26,7 +26,7 @@ async function promptForMissingOptions() {
       message: 'Please provide the task name or description',
       default: 'WHZN-777 | Fixed the bug'
     })
-    // TODO - put this param in the config
+
     questions.push({
       type: 'input',
       name: 'pagePath',

@@ -35,6 +35,9 @@ export async function cli(args) {
 
     if (actionType === 'preview') {
       await handleWechatPreview()
+      logFinish('PREVIEW WAS GENERATED. GO TO DAVAI-INFO folder')
+      logICWT()
+
       return logSuccess('THE NEW PREVIEW WAS GENERATED!')
     }
 
