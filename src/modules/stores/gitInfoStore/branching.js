@@ -39,6 +39,22 @@ export const BRANCHING = {
 
       return this
     } catch (err) { return logError('Switching To A Release Branch failed:', err) }
+  },
+
+  async switchToNewReleaseBranch({ newReleaseBranch }) {
+    try {
+      const {
+        result,
+        code,
+        ErrorMessage
+      } = await new GitService().createBranch(newReleaseBranch)
+
+      if (code !== 0) throw new Error(ErrorMessage)
+
+      this.currentBranch = cleanUpFromN(result)
+
+      return this
+    } catch (err) { return logError('Switching To A Release Branch failed:', err) }
   }
 
 }

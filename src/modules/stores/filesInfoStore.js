@@ -19,6 +19,7 @@ export const FilesInfoStore = observable({
   DEV_TOOLS_PATH: '',
   FILES_TO_ADD_THEN_DELETE: [],
   FILES_TO_UPDATE_WITH_VERSION: [],
+  FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE: [],
   FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE: [],
   GIT_RELEASE_BRANCH_NAME_BASE: '',
   GIT_RELEASE_TAG_NAME_BASE: '',
@@ -75,6 +76,7 @@ export const FilesInfoStore = observable({
         DEV_TOOLS_PATH,
         FILES_TO_ADD_THEN_DELETE,
         FILES_TO_UPDATE_WITH_VERSION,
+        FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE,
         FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE,
         GIT_RELEASE_BRANCH_NAME_BASE,
         GIT_RELEASE_TAG_NAME_BASE
@@ -85,6 +87,7 @@ export const FilesInfoStore = observable({
       || !DEV_TOOLS_PATH
       || !FILES_TO_ADD_THEN_DELETE
       || !FILES_TO_UPDATE_WITH_VERSION
+      || !FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE
       || !FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
       || !GIT_RELEASE_BRANCH_NAME_BASE
       || !GIT_RELEASE_TAG_NAME_BASE
@@ -95,6 +98,7 @@ export const FilesInfoStore = observable({
       this.DEV_TOOLS_PATH = DEV_TOOLS_PATH
       this.FILES_TO_ADD_THEN_DELETE = FILES_TO_ADD_THEN_DELETE
       this.FILES_TO_UPDATE_WITH_VERSION = FILES_TO_UPDATE_WITH_VERSION
+      this.FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE = FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE
       this.FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE = FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
       this.GIT_RELEASE_BRANCH_NAME_BASE = GIT_RELEASE_BRANCH_NAME_BASE
       this.GIT_RELEASE_TAG_NAME_BASE = GIT_RELEASE_TAG_NAME_BASE
@@ -164,14 +168,34 @@ export const FilesInfoStore = observable({
     return this
   },
 
+  async findAndChangeLineInFile({
+    directory = null,
+    fileName = null,
+    findBy = null,
+    replaceBy = null
+  }) {
+    if (!directory || !fileName || !findBy || !replaceBy) return logError(
+      'Finding line failed:',
+      '(directory | fileName | findBy | replaceBy) was not found'
+    )
+    // FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE
+    const replacedLine = await new FilesService().findAndChangeLineInFile({
+      directory,
+      fileName,
+      findBy,
+      replaceBy
+    })
+
+    this.replacedLine = replacedLine
+    return this
+  },
+
   async updateFilesWithVersion({
     directory,
-    oldVersion,
     newVersion,
     type = 'production'
   }) {
     if (!directory
-      || !oldVersion
       || !newVersion
     ) return logError('Updating Prod Files Version failed:', '(directory | oldVersion | newVersion was not found')
 
@@ -179,10 +203,9 @@ export const FilesInfoStore = observable({
       FILES_TO_UPDATE_WITH_VERSION,
       FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
     } = this
-
-    const filesToWrite = type === 'production'
-      ? FILES_TO_UPDATE_WITH_VERSION
-      : FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
+    let filesToWrite = []
+    if (type === 'production') filesToWrite = FILES_TO_UPDATE_WITH_VERSION
+    if (type === 'afterRelease') filesToWrite = FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
 
     const updatedSuccessfully = await new FilesService().updateFilesWithVersion({
       filesToWrite,
@@ -202,7 +225,8 @@ export const FilesInfoStore = observable({
   addProductionFiles: action,
   deleteProductionFiles: action,
   updateFilesWithVersion: action,
-  setIntegrationReleaseBranchBase: action
+  setIntegrationReleaseBranchBase: action,
+  findAndChangeLineInFile: action
 })
 
 autorun(() => {

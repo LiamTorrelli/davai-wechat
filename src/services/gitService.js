@@ -7,7 +7,8 @@ import {
   OTHER,
   PUSHING,
   SETTING,
-  TAGGING
+  TAGGING,
+  PULLING
 } from './gitServices'
 
 export class GitService {
@@ -24,4 +25,5 @@ export class GitService {
   pushReleaseTag(args) { return PUSHING.pushReleaseTag(args) }
   pushAfterMerge(args) { return PUSHING.pushAfterMerge(args) }
   createGitTag(args) { return TAGGING.createGitTag(args) }
+  pullBranch(args) { return PULLING.pullBranch(args) }
 }

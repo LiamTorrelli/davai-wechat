@@ -48,6 +48,14 @@ const tasks = {
     title: '# Updating files with new version after release',
     error: '# There was an error while Updating files with new version after release'
   },
+  updateFilesWithVersionInNewRelease: {
+    title: '# Updating files with new version in a new release',
+    error: '# There was an error while Updating files with new version in a new release'
+  },
+  submitAllToGithub: {
+    title: '# Committing after creating a new release branch',
+    error: '# There was an error while Committing after creating a new release branch'
+  },
   gitCreateBranch: {
     title: '# Creating a release branch',
     error: '# There was an error while creating a release branch'

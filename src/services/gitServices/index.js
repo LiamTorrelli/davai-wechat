@@ -6,6 +6,7 @@ import { SETTING } from './setting'
 import { STAGING } from './staging'
 import { MERGING } from './merging'
 import { TAGGING } from './tagging'
+import { PULLING } from './pulling'
 
 export {
   BRANCHING,
@@ -15,5 +16,6 @@ export {
   SETTING,
   STAGING,
   MERGING,
-  TAGGING
+  TAGGING,
+  PULLING
 }

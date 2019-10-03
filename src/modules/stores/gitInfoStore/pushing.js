@@ -27,7 +27,7 @@ export const PUSHING = {
   async pushAfterMerge({ branchName }) {
     if (!branchName) return logError(
       'Pushing After merge failed:',
-      'No tag branch name was provided'
+      'No branch name was provided'
     )
 
     try {

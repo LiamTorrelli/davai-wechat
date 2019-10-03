@@ -114,7 +114,7 @@ export async function startUpTasks() {
     { /*  ** checkStartUpBranch **  */
       task: () => taskHandler('checkStartUpBranch', checkStartUpBranch),
       title: tasks['checkStartUpBranch'].title,
-      enabled: () => actionType === 'release'
+      enabled: () => actionType === 'release' || actionType === 'create'
     },
     { /*  ** setStatusedFiles **  */
       task: () => taskHandler('setStatusedFiles', setStatusedFiles),
@@ -123,12 +123,12 @@ export async function startUpTasks() {
     { /*  ** checkForChanges **  */
       task: () => taskHandler('checkForChanges', checkForChanges),
       title: tasks['checkForChanges'].title,
-      enabled: () => actionType === 'release'
+      enabled: () => actionType === 'release' || actionType === 'create'
     },
     { /*  ** mergeMasterBranch **  */
       task: () => taskHandler('mergeMasterBranch', mergeMasterBranch),
       title: tasks['mergeMasterBranch'].title,
-      enabled: () => actionType === 'release'
+      enabled: () => actionType === 'release' || actionType === 'create'
     },
     { /*  ** checkOpenReleases **  */
       task: () => taskHandler('checkOpenReleases', checkOpenReleases),

@@ -10,9 +10,10 @@ import { handleWechatPreview } from './tasks/handleWechatPreview'
 import { handleWechatRelease } from './tasks/handleWechatRelease'
 import { pushReleaseTag } from './tasks/pushReleaseTag'
 import { cleanupProductionFiles } from './tasks/cleanupProductionFiles'
-import { submittingChangesToGithub } from './tasks/submittingChangesToGithub'
+import { submitChangesToGithub } from './tasks/submitChangesToGithub'
+import { createNewReleaseBranch } from './tasks/createNewReleaseBranch'
 
-import { ShellArgumentsStore, ProjectInfoStore } from './modules/index'
+import { ShellArgumentsStore, ProjectInfoStore, FilesInfoStore } from './modules/index'
 import { cleanUpFromN } from './helpers/help'
 
 // Handlers
@@ -30,7 +31,6 @@ export async function cli(args) {
     await parseArgumentsIntoOptions(args)
     await promptForMissingOptions()
     await startUpTasks()
-
     const { actionType } = await ShellArgumentsStore
 
     if (actionType === 'preview') {
@@ -48,16 +48,24 @@ export async function cli(args) {
       const { newVersion } = ProjectInfoStore
       logFinish(`RELEASE ${cleanUpFromN(newVersion)} was uploaded to Wechat`)
       logICWT()
-      // // await cleanupProductionFiles()
+
       return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')
     }
 
     if (actionType === 'create') {
-      logStoreValues(ShellArgumentsStore, 'ShellArgumentsStore')
+      const { newReleaseBranch } = ShellArgumentsStore
+      await createNewReleaseBranch()
+      await cleanupProductionFiles()
+      await submitChangesToGithub()
+
+      logFinish(`${cleanUpFromN(newReleaseBranch)} was created`)
+      logICWT()
+
+      return logSuccess('THE NEW RELEASE BRANCH WAS CREATED!')
     }
 
     return logError('DAVAI-WECHAT only supports preview|release|create')
-  } catch (error) { console.log('!!!!!!'); logError(error) }
+  } catch (error) { console.log('Error is here'); logError(error) }
 
   return logError('How did you get here?')
 }

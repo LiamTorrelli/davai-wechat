@@ -103,7 +103,7 @@ export const COMMITTING = {
     description = null
   }) {
     if (!actionTime || !releaseType || !newVersion || !description) return logError(
-      'Creating release Message failed:',
+      'Creating release message failed:',
       'No date or release type or new version or description'
     )
 
@@ -130,6 +130,40 @@ export const COMMITTING = {
 
     message += `❍ RELEASE-${cleanUpFromN(newVersion)} ❍ [ ${releaseType} ]\n\n`
     message += `  Description: ${cleanUpFromN(description)}\n\n`
+    message += `${divider}\n`
+    message += `${developerLine}\n`
+    message += `${dateLine}\n`
+    message += `${divider}`
+
+    return message
+  },
+
+  async createCommitMsg({
+    actionTime = null,
+    branchName = null
+  }) {
+    if (!actionTime || !branchName) return logError(
+      'Creating commit message failed:',
+      'No date or branch name provided'
+    )
+
+    const { day, month, time } = actionTime
+    const { developer } = this
+
+    const dateString = `${month} ${day} [ ${time} ]`
+
+    let message = ''
+    const developerLine = `  ✸ Developer: ${cleanUpFromN(developer)}`
+    const dateLine = `  ✸ Date: ${cleanUpFromN(dateString)}`
+
+    const dividerLength = getMaxLength(developerLine.length, dateLine.length)
+
+    let divider = '☐'
+
+    for (let i = 0; i < dividerLength; i += 1) divider += '-'
+    divider += '☐'
+
+    message += `❍ STARTED ${cleanUpFromN(branchName)} ❍\n\n`
     message += `${divider}\n`
     message += `${developerLine}\n`
     message += `${dateLine}\n`
