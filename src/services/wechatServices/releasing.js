@@ -1,4 +1,5 @@
 // Libs
+import path from 'path'
 import shell from 'shelljs'
 
 export const RELEASING = {

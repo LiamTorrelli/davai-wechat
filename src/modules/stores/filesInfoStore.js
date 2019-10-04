@@ -193,10 +193,12 @@ export const FilesInfoStore = observable({
   async updateFilesWithVersion({
     directory,
     newVersion,
+    oldVersion,
     type = 'production'
   }) {
     if (!directory
       || !newVersion
+      || !oldVersion
     ) return logError('Updating Prod Files Version failed:', '(directory | oldVersion | newVersion was not found')
 
     const {

@@ -27,6 +27,7 @@ async function createProductionFiles() {
 
 async function updateProductionFiles() {
   const { oldVersion, newVersion } = ProjectInfoStore
+
   const { directory } = ShellArgumentsStore
 
   const { filesUpdatedWithVersion } = await FilesInfoStore.updateFilesWithVersion({
