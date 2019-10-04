@@ -1,22 +1,26 @@
 {
   "DEV_TOOLS_PATH": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli",
-  "STARTUP_BRANCH": "PRE-PROD",
+  "DEFAULT_PAGE_PATH": ["pages/index/index"],
+  "STARTUP_BRANCH": "integration",
+  "VERSION_FILE": "VERSION",
+  "GIT_RELEASE_BRANCH_NAME_BASE": "COMPANYNAME-RELEASE",
+  "GIT_RELEASE_TAG_NAME_BASE": "COMPANYNAME-BUILD",
+  "GIT_INTEGRATION_RELEASE_BRANCH_BASE": "INTEGRATION-RELEASE",
   "STARTUP_FILES": [
-    "VERSIONS.log",
+    "VERSION",
     "app.settings.js",
     "project.config.json",
     "package.json",
     "README.md"
   ],
-  "DEFAULT_PAGE_PATH": ["pages/events/index/index"],
   "FILES_TO_ADD_THEN_DELETE": ["PRODUCTION.js"],
   "FILES_TO_UPDATE_WITH_VERSION": [
     {
       "fileName": "app.settings.js",
-      "lookingFor": "const APP_VERSION_PROD ="
+      "lookingFor": "const APP_VERSION ="
     },
     {
-      "fileName": "VERSIONS.log",
+      "fileName": "VERSION",
       "lookingFor": ""
     },
     {
@@ -38,9 +42,5 @@
       "lookingFor": "## DEVELOPMENT RELEASE-",
       "isNewRelease": true
     }
-  ],
-  "VERSION_FILE": "VERSIONS.log",
-  "GIT_RELEASE_BRANCH_NAME_BASE": "WHZN-RELEASE",
-  "GIT_RELEASE_TAG_NAME_BASE": "WHZN-BUILD",
-  "GIT_INTEGRATION_RELEASE_BRANCH_BASE": "RELEASE"
+  ]
 }
