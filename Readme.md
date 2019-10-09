@@ -1,5 +1,9 @@
 # DAVAI-WECHAT
 
+## VERSIONS
+ - DEVELOPMENT RELEASE 1.0.1
+ - PRODUCTION RELEASE 1.0.1
+
 ## Usage
 ```shell
   davai-wechat [ release | preview | create ]
