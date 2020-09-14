@@ -86,11 +86,11 @@ export async function startUpTasks() {
       task: () => taskHandler('setStatusedFiles', setStatusedFiles),
       title: tasks['setStatusedFiles'].title
     },
-    // { /*  ** checkForChanges **  */
-    //   task: () => taskHandler('checkForChanges', checkForChanges),
-    //   title: tasks['checkForChanges'].title,
-    //   enabled: () => actionType === 'release' || actionType === 'create'
-    // },
+    { /*  ** checkForChanges **  */
+      task: () => taskHandler('checkForChanges', checkForChanges),
+      title: tasks['checkForChanges'].title,
+      enabled: () => actionType === 'release' || actionType === 'create'
+    },
     { /*  ** setDeveloper **  */
       task: () => taskHandler('setDeveloper', setDeveloper),
       title: tasks['setDeveloper'].title
