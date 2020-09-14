@@ -77,15 +77,15 @@ export async function startUpTasks() {
       task: () => taskHandler('checkIfFilesExist', checkIfFilesExist),
       title: tasks['checkIfFilesExist'].title
     },
-    // { /*  ** checkStartUpBranch **  */
-    //   task: () => taskHandler('checkStartUpBranch', checkStartUpBranch),
-    //   title: tasks['checkStartUpBranch'].title,
-    //   enabled: () => actionType === 'release' || actionType === 'create'
-    // },
-    // { /*  ** setStatusedFiles **  */
-    //   task: () => taskHandler('setStatusedFiles', setStatusedFiles),
-    //   title: tasks['setStatusedFiles'].title
-    // },
+    { /*  ** checkStartUpBranch **  */
+      task: () => taskHandler('checkStartUpBranch', checkStartUpBranch),
+      title: tasks['checkStartUpBranch'].title,
+      enabled: () => actionType === 'release' || actionType === 'create'
+    },
+    { /*  ** setStatusedFiles **  */
+      task: () => taskHandler('setStatusedFiles', setStatusedFiles),
+      title: tasks['setStatusedFiles'].title
+    },
     // { /*  ** checkForChanges **  */
     //   task: () => taskHandler('checkForChanges', checkForChanges),
     //   title: tasks['checkForChanges'].title,
