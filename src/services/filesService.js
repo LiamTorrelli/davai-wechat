@@ -135,8 +135,6 @@ export class FilesService {
       return foundTheLine.includes(true)
     })
 
-    debugger
-
     return !isEverythingOk.includes(false)
   }
 

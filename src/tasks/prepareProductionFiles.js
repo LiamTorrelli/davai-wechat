@@ -17,7 +17,7 @@ import {
 
 async function updateProductionFiles() {
   const { oldVersion, newVersion } = ProjectInfoStore
-  debugger
+
   const { directory } = ShellArgumentsStore
 
   const { filesUpdatedWithVersion } = await FilesInfoStore.updateFilesWithVersion({

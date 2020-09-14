@@ -46,6 +46,7 @@ export async function cli(args) {
       await prepareProductionFiles()
       await pushProductionFilesToPreProd()
       await createReleaseBranch()
+      debugger
       await buildProject()
       await handleWechatRelease()
       await pushReleaseTag()
