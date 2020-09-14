@@ -26,7 +26,7 @@ import {
 } from './handlers/outputHandler'
 
 export async function cli(args) {
-  log('1.0.4', 'DAVAI_WECHAT ')
+  log('1.0.5', 'DAVAI_WECHAT ')
 
   try {
     await parseArgumentsIntoOptions(args)
@@ -46,7 +46,6 @@ export async function cli(args) {
       await prepareProductionFiles()
       await pushProductionFilesToPreProd()
       await createReleaseBranch()
-      debugger
       await buildProject()
       await handleWechatRelease()
       await pushReleaseTag()
