@@ -26,7 +26,7 @@ import {
 } from './handlers/outputHandler'
 
 export async function cli(args) {
-  log('1.0.5', 'DAVAI_WECHAT ')
+  log('1.0.7', 'DAVAI WECHAT')
 
   try {
     await parseArgumentsIntoOptions(args)
@@ -54,7 +54,7 @@ export async function cli(args) {
       logFinish(`RELEASE ${cleanUpFromN(newVersion)} was uploaded to Wechat`)
       logICWT()
 
-      return logSuccess('THE NEW VERSION WAS RELEASED TO WECHAT!')
+      return logSuccess('THE NEW VERSION WAS UPLOADED TO WECHAT!')
     }
 
     // if (actionType === 'create') {

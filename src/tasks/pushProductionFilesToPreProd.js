@@ -20,15 +20,27 @@ import {
 
 async function createGithubCommit() {
   await GitInfoStore.setStatusedFiles()
-  const { actionTime } = ProjectInfoStore
   const { STARTUP_BRANCH } = FilesInfoStore
+
+  const {
+    actionTime,
+    releaseType,
+    newVersion,
+    releaseDescription
+  } = ProjectInfoStore
+
   const commitMsg = await GitInfoStore
-    .createAutoCommitMsg({ actionTime })
+    .createReleaseMsg({
+      description: releaseDescription,
+      actionTime,
+      releaseType,
+      newVersion
+    })
 
   if (commitMsg && STARTUP_BRANCH) {
     try {
       await GitInfoStore.stageFiles()
-      await GitInfoStore.commitChanges(commitMsg)
+      await GitInfoStore.commitChanges({ commitMessage: commitMsg })
       await GitInfoStore.pushCommit({ branchName: STARTUP_BRANCH })
 
       return true

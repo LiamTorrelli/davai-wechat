@@ -33,7 +33,7 @@ async function createGithubCommit() {
   if (commitMsg && currentBranch) {
     try {
       await GitInfoStore.stageFiles()
-      await GitInfoStore.commitChanges(commitMsg)
+      await GitInfoStore.commitChanges({ commitMessage: commitMsg })
       await GitInfoStore.pushCommit({ branchName: currentBranch })
 
       return true
@@ -72,7 +72,7 @@ async function submitAllToGithub() {
   if (commitMsg && currentBranch) {
     try {
       await GitInfoStore.stageFiles()
-      await GitInfoStore.commitChanges(commitMsg)
+      await GitInfoStore.commitChanges({ commitMessage: commitMsg })
       await GitInfoStore.pushCommit({ branchName: currentBranch })
 
       return true
