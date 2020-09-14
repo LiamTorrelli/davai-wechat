@@ -32,11 +32,6 @@ async function checkStartUpBranch() {
   return currentBranch === STARTUP_BRANCH
 }
 
-async function checkOpenReleases() {
-  const { GIT_RELEASE_BRANCH_NAME_BASE } = FilesInfoStore
-  return GitInfoStore.checkOpenReleases(GIT_RELEASE_BRANCH_NAME_BASE)
-}
-
 async function setStatusedFiles() {
   await GitInfoStore.setStatusedFiles()
 
@@ -50,15 +45,9 @@ async function setDeveloper() {
 }
 
 async function checkForChanges() {
-  const { statusedFiles } = GitInfoStore
+  const { statusedFiles } = await GitInfoStore
   // This is only for release action
   return __isEmpty(statusedFiles)
-}
-
-async function mergeMasterBranch() {
-  const { mergeStatus } = await GitInfoStore.mergeBranch('origin/master')
-  // This is only for release action
-  return mergeStatus
 }
 
 async function setProjectInfo() {
@@ -78,29 +67,6 @@ async function setProjectInfo() {
   return actionTime
 }
 
-/**
- * These are startUp tasks. What is happening here?
- ** - checkIfFilesExist ->
- *  - getting the DAVAI-CONFIG.json file [ into FilesInfoStore ]
- *  - setting STARTUP_FILES, VERSION_FILE, DEV_TOOLS_PATH [ into FilesInfoStore ]
- *
- ** - checkStartUpBranch ->
- *  - getting and setting the current branch name [ in the GitInfoStore ]
- *  - checking whether it equals STARTUP_BRANCH [ from FilesInfoStore ]
- *
- ** - checkOpenReleases ->
- *  - checking whether the repo has other open releases not merged into master
- *
- ** - setGitInfo ->
- *  - getting and setting current status and git user [ in the GitInfoStore ]
- *
- ** - setProjectInfo ->
- *  - setting
- *    : release action date
- *    : old & new versions
- *    : release type
- *    : release description [ in the ProjectInfoStore ]
- */
 export async function startUpTasks() {
   logInfo('Start up tasks')
 
@@ -124,16 +90,6 @@ export async function startUpTasks() {
       task: () => taskHandler('checkForChanges', checkForChanges),
       title: tasks['checkForChanges'].title,
       enabled: () => actionType === 'release' || actionType === 'create'
-    },
-    { /*  ** mergeMasterBranch **  */
-      task: () => taskHandler('mergeMasterBranch', mergeMasterBranch),
-      title: tasks['mergeMasterBranch'].title,
-      enabled: () => actionType === 'release' || actionType === 'create'
-    },
-    { /*  ** checkOpenReleases **  */
-      task: () => taskHandler('checkOpenReleases', checkOpenReleases),
-      title: tasks['checkOpenReleases'].title,
-      enabled: () => false // TODO
     },
     { /*  ** setDeveloper **  */
       task: () => taskHandler('setDeveloper', setDeveloper),

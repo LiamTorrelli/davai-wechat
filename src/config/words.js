@@ -16,10 +16,6 @@ const tasks = {
     title: '# Merging master into pre-prod branch',
     error: '# Merging master into pre-prod branch failed'
   },
-  checkOpenReleases: {
-    title: '# Checking other open releases',
-    error: '# You should not have other open releases not merged into master'
-  },
   checkForChanges: {
     title: '# Checking for the current changes localy',
     error: '# You should not have any local changes at this point'
@@ -103,6 +99,10 @@ const tasks = {
   createBuildTag: {
     title: '# Creating TAG',
     error: '# There was an error while Creating TAG'
+  },
+  createBuildForProject: {
+    title: '# Building project',
+    error: '# There was an error while Building project'
   }
 }
 

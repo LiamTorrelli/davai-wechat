@@ -21,7 +21,7 @@ export const RELEASING = {
 
     const resolvedDevtoolsPath = path.resolve(DEV_TOOLS_PATH).split('\'').join('"')
     const output = shell.exec(
-      `${resolvedDevtoolsPath} -u ${newVersion}@${directory} --upload-desc '${releaseDescription}'`,
+      `${resolvedDevtoolsPath} upload --project ${directory} -v ${newVersion} -d '${releaseDescription}'`,
       { async: false }
     )
 

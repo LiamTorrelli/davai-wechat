@@ -1,5 +1,5 @@
 // Services
-import { GitService } from '../../../services/gitService'
+import { DavaiCommit } from 'davai-commit'
 
 // Handlers
 import { logError } from '../../../handlers/outputHandler'
@@ -12,8 +12,7 @@ export const SETTING = {
         result,
         code,
         ErrorMessage
-      } = await new GitService().getGitStatus()
-
+      } = await new DavaiCommit.GitService().getGitStatus()
       if (code !== 0) throw new Error(ErrorMessage)
 
       this.statusedFiles = result
@@ -27,21 +26,13 @@ export const SETTING = {
         result,
         code,
         ErrorMessage
-      } = await new GitService().getGitUserName()
+      } = await new DavaiCommit.GitService().getGitUserName()
 
       if (code !== 0) throw new Error(ErrorMessage)
 
       this.developer = result
       return this
     } catch (err) { return logError('Setting developer failed:', err) }
-  },
-
-  async setCommitType(commitType) {
-    if (!commitType) return logError('Setting commit type failed:', 'No commit type specified')
-
-    this.commitType = commitType
-
-    return this
   },
 
   async setReleaseType(releaseType) {

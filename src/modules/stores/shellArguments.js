@@ -1,7 +1,4 @@
-import { observable, action, autorun } from 'mobx'
-
-// Handlers
-import { logAutorun, logStoreValues } from '../../handlers/outputHandler'
+import { observable, action } from 'mobx'
 
 export const ShellArgumentsStore = observable({
   directory: null,
@@ -63,9 +60,4 @@ export const ShellArgumentsStore = observable({
   setPagePath: action,
   setPageQueryParams: action,
   setNewReleaseBranch: action
-})
-
-autorun(() => {
-  logAutorun('Shell Arguments')
-  // logStoreValues(ShellArgumentsStore, 'ShellArgumentsStore')
 })

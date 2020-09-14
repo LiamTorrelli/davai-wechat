@@ -33,7 +33,6 @@
     "package.json",
     "README.md"
   ],
-  "FILES_TO_ADD_THEN_DELETE": ["PRODUCTION.js"],
   "FILES_TO_UPDATE_WITH_VERSION": [
     {
       "fileName": "app.settings.js",
@@ -47,20 +46,6 @@
       "fileName": "package.json",
       "lookingFor": "version",
       "isJson": true
-    }
-  ],
-  "FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE": [
-    {
-      "fileName": "README.md",
-      "lookingFor": "## PRODUCTION RELEASE-",
-      "isReadme": true
-    }
-  ],
-  "FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE": [
-    {
-      "fileName": "README.md",
-      "lookingFor": "## DEVELOPMENT RELEASE-",
-      "isNewRelease": true
     }
   ]
 }
@@ -145,17 +130,6 @@
 
 > `GIT_INTEGRATION_RELEASE_BRANCH_BASE` **[ `create` - flow ]** this is the integration release branch name, which branches out from your `integration` *(STARTUP_BRANCH)* branch and later makes a PR into your `integration` *(STARTUP_BRANCH)* branch
 
-****
-
-### FILES_TO_ADD_THEN_DELETE
-**USED IN [ `release` ] and [ `create` ] flows**
-```json
-  {
-    "FILES_TO_ADD_THEN_DELETE": ["PRODUCTION.js"],
-    ...
-  }
-
-```
 > This is the array of files, that will be added and commited to the project BEFORE the release to Wechat is made in *(GIT_RELEASE_BRANCH_NAME_BASE)* in the **[ `release` - flow ]** and deleted in the **[ `create` - flow ]**, when you start the new release
 
 ****
@@ -206,21 +180,6 @@
 
 > TODO make a documentation, how to parse each type of file
 
-****
-
-### FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
-**USED IN [ `release` ] flow**
-```json
-  {
-     "FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE": [
-      {
-        "fileName": "README.md",
-        "lookingFor": "## PRODUCTION RELEASE-",
-        "isReadme": true
-      }
-    ],
-    ...
-  }
 ```
 >  It is MUST HAVE, because you cannot make an empty commit yet **[ issue 10 ]**
 
@@ -228,19 +187,6 @@
 
 ****
 
-### FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
-**USED IN [ `create` ] flow**
-```json
-  {
-     "FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE": [
-        {
-          "fileName": "README.md",
-          "lookingFor": "## DEVELOPMENT RELEASE-",
-          "isNewRelease": true
-        }
-      ]
-    ...
-  }
 ```
 >  It is MUST HAVE, because you cannot make an empty commit yet **[ issue 10 ]**
 
@@ -641,4 +587,3 @@
 8) **Version file HAS to be a one-line**
   - Version file needs to be any type you want (one-line, json, readme)
 9) **Files that are used in the config, needs to be checked without having to add them in the `STARTUP_FILES`**
-10) **`FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE` and `FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE` are important, because you cannot make an empty commit yet**

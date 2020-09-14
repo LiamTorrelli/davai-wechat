@@ -15,19 +15,9 @@ import {
   ShellArgumentsStore
 } from '../modules/index'
 
-async function createProductionFiles() {
-  const { directory } = ShellArgumentsStore
-  const {
-    productionFilesAdded,
-    noProductionsFilesToAdd
-  } = await FilesInfoStore.addProductionFiles(directory)
-
-  return productionFilesAdded || noProductionsFilesToAdd
-}
-
 async function updateProductionFiles() {
   const { oldVersion, newVersion } = ProjectInfoStore
-
+  debugger
   const { directory } = ShellArgumentsStore
 
   const { filesUpdatedWithVersion } = await FilesInfoStore.updateFilesWithVersion({
@@ -44,10 +34,6 @@ export async function prepareProductionFiles() {
   logInfo('Prepare production files')
 
   const tasksToRun = new Listr([
-    { /*  ** createProductionFiles **  */
-      task: () => taskHandler('createProductionFiles', createProductionFiles),
-      title: tasks['createProductionFiles'].title
-    },
     { /*  ** updateProductionFiles **  */
       task: () => taskHandler('updateProductionFiles', updateProductionFiles),
       title: tasks['updateProductionFiles'].title

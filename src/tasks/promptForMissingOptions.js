@@ -3,6 +3,11 @@ import inquirer from 'inquirer'
 // Stores
 import { ShellArgumentsStore, FilesInfoStore } from '../modules/index'
 
+// Handlers
+import {
+  logError
+} from '../handlers/outputHandler'
+
 async function promptForMissingOptions() {
   const questions = []
   let answers
@@ -93,7 +98,7 @@ async function promptForMissingOptions() {
     // TODO: check if the version is correct
     ShellArgumentsStore.setNewReleaseBranch(newReleaseBranch || newReleaseBranchNameFull)
   } else {
-    console.log('davai-wechat only supports preview|release|create')
+    logError('DAVAI-WECHAT only supports preview|release|create')
     process.exit(0)
   }
 

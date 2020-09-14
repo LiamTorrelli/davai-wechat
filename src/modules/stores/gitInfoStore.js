@@ -1,5 +1,5 @@
 // Libs
-import { observable, action, autorun } from 'mobx'
+import { observable, action } from 'mobx'
 
 // Functions
 import {
@@ -14,13 +14,9 @@ import {
   PULLING
 } from './gitInfoStore/index'
 
-// Handlers
-import { logAutorun } from '../../handlers/outputHandler'
-
 export const GitInfoStore = observable({
   developer: null,
   currentBranch: null, // setCurrentBranch
-  allOpenPrs: null, // checkOpenReleases
   commitType: '',
   releaseType: '',
   statusedFiles: [],
@@ -52,13 +48,7 @@ export const GitInfoStore = observable({
   createCommitMsg: action,
   pushCommit: action,
   createTag: action,
-  checkOpenReleases: action,
   mergeBranch: action,
   stageFiles: action,
   pullBranch: action
-})
-
-autorun(() => {
-  logAutorun('Git Info')
-  // logStoreValues(GitInfoStore, 'GitInfoStore')
 })

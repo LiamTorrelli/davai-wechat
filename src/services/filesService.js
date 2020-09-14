@@ -89,13 +89,6 @@ export class FilesService {
           replacement: `${file.lookingFor}${newVersion}`.split('\n').join(''),
           oneLineFile: false
         }
-      } else if (newFile.isNewRelease) {
-        newFile = {
-          ...file,
-          lookingFor: `${file.lookingFor}`.split('\n').join(''),
-          replacement: `${file.lookingFor} ${newVersion}`.split('\n').join(''),
-          oneLineFile: false
-        }
       } else {
         newFile = {
           ...file,
@@ -113,10 +106,8 @@ export class FilesService {
       linesOfAFile.forEach(line => {
         let newLine = line
 
-        if (line === `${newFile.lookingFor}`) {
-          newLine = `${newFile.replacement}`
-          foundTheLine.push(true)
-        }
+        newLine = `${newFile.replacement}`
+        foundTheLine.push(true)
 
         allChangedLines.push(newLine)
         foundTheLine.push(false)

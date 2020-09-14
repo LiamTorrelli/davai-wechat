@@ -1,3 +1,29 @@
 {
-  "PROJECT_NAME": "DAVAI-WECHAT"
+  "PROJECT_NAME": "WECHAT-MINIAPP",
+  "DEV_TOOLS_PATH": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli",
+  "STARTUP_BRANCH": "dev",
+  "STARTUP_FILES": [
+    "DEV_VERSION",
+    "PROD_VERSION",
+    "project.config.json",
+    "package.json"
+  ],
+  "DEFAULT_PAGE_PATH": ["pages/index/index"],
+  "FILES_TO_UPDATE_WITH_VERSION": [
+    {
+      "fileName": "DEV_VERSION"
+    },
+    {
+      "fileName": "PROD_VERSION"
+    },
+    {
+      "fileName": "package.json",
+      "lookingFor": "version",
+      "isJson": true
+    }
+  ],
+  "VERSION_FILE": "DEV_VERSION",
+  "GIT_RELEASE_BRANCH_NAME_BASE": "PROJECT-RELEASE",
+  "GIT_RELEASE_TAG_NAME_BASE": "PROJECT-BUILD",
+  "GIT_INTEGRATION_RELEASE_BRANCH_BASE": "IN-RELEASE"
 }

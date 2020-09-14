@@ -11,24 +11,32 @@ import { taskHandler } from '../handlers/taskHandler'
 // Stores
 import {
   FilesInfoStore,
-  ShellArgumentsStore
+  ShellArgumentsStore,
+  ProjectInfoStore
 } from '../modules/index'
 
-async function deleteProductionFiles() {
-  const { directory } = ShellArgumentsStore
-  const { productionFilesDeleted } = await FilesInfoStore
-    .deleteProductionFiles(directory)
+async function updateProductionFiles() {
+  const { oldVersion, newVersion } = ProjectInfoStore
 
-  return productionFilesDeleted
+  const { directory } = ShellArgumentsStore
+
+  const { filesUpdatedWithVersion } = await FilesInfoStore.updateFilesWithVersion({
+    directory,
+    oldVersion,
+    newVersion,
+    type: 'production'
+  })
+
+  return filesUpdatedWithVersion
 }
 
 export async function cleanupProductionFiles() {
   logInfo('Clean up production files')
 
   const tasksToRun = new Listr([
-    { /*  ** deleteProductionFiles **  */
-      task: () => taskHandler('deleteProductionFiles', deleteProductionFiles),
-      title: tasks['deleteProductionFiles'].title
+    { /*  ** updateProductionFiles **  */
+      task: () => taskHandler('updateProductionFiles', updateProductionFiles),
+      title: tasks['updateProductionFiles'].title
     }
   ])
 

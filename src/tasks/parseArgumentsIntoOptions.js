@@ -41,7 +41,6 @@ function parseArgumentsIntoOptions(rawArgs) {
   ShellArgumentsStore.setDescription(args._[2] || false)
   ShellArgumentsStore.setNewReleaseBranch(args._[3] || false)
   ShellArgumentsStore.setDirectory(process.cwd())
-
   return true
 }
 

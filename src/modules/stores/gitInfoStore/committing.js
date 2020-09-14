@@ -1,5 +1,5 @@
 // Services
-import { GitService } from '../../../services/gitService'
+import { DavaiCommit } from 'davai-commit'
 
 // Handlers
 import { logError, logThis } from '../../../handlers/outputHandler'
@@ -23,7 +23,7 @@ export const COMMITTING = {
         result,
         code,
         ErrorMessage
-      } = await new GitService().commitChanges({ msg })
+      } = await new DavaiCommit.GitService().commitChanges({ commitMessage: msg })
 
       if (code !== 0
         && !result.includes('nothing to commit, working tree clean')

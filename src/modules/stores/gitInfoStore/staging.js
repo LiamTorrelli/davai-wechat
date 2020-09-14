@@ -1,5 +1,5 @@
 // Services
-import { GitService } from '../../../services/gitService'
+import { DavaiCommit } from 'davai-commit'
 
 // Handlers
 import { logError } from '../../../handlers/outputHandler'
@@ -11,7 +11,7 @@ export const STAGING = {
       const {
         code,
         ErrorMessage
-      } = await new GitService().addFilesToGitStage()
+      } = await new DavaiCommit.GitService().addFilesToGitStage()
 
       if (code !== 0) throw new Error(ErrorMessage)
 

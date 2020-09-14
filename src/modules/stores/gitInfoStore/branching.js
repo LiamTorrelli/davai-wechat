@@ -1,5 +1,5 @@
 // Services
-import { GitService } from '../../../services/gitService'
+import { DavaiCommit } from 'davai-commit'
 
 // Handlers
 import { logError } from '../../../handlers/outputHandler'
@@ -15,7 +15,7 @@ export const BRANCHING = {
         result,
         code,
         ErrorMessage
-      } = await new GitService().getCurrentBranch()
+      } = await new DavaiCommit.GitService().getCurrentBranch()
 
       if (code !== 0) throw new Error(ErrorMessage)
 
@@ -31,7 +31,7 @@ export const BRANCHING = {
         result,
         code,
         ErrorMessage
-      } = await new GitService().createBranch(branchName)
+      } = await new DavaiCommit.GitService().createBranch(branchName)
 
       if (code !== 0) throw new Error(ErrorMessage)
 
@@ -47,7 +47,7 @@ export const BRANCHING = {
         result,
         code,
         ErrorMessage
-      } = await new GitService().createBranch(newReleaseBranch)
+      } = await new DavaiCommit.GitService().createBranch(newReleaseBranch)
 
       if (code !== 0) throw new Error(ErrorMessage)
 

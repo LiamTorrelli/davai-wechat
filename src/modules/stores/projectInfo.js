@@ -1,4 +1,4 @@
-import { observable, action, autorun } from 'mobx'
+import { observable, action } from 'mobx'
 import { mapObjIndexed } from 'ramda'
 
 // Helpers
@@ -9,7 +9,7 @@ import { HumanDate } from '../../helpers/humanTimestamp'
 import { FilesService } from '../../services/filesService'
 
 // Handlers
-import { logError, logAutorun, logStoreValues } from '../../handlers/outputHandler'
+import { logError } from '../../handlers/outputHandler'
 
 export const ProjectInfoStore = observable({
   releaseType: null,
@@ -71,9 +71,4 @@ export const ProjectInfoStore = observable({
   setReleaseDescription: action,
   setOldVersion: action,
   setNewVersion: action
-})
-
-autorun(() => {
-  logAutorun('Project Info')
-  // logStoreValues(ProjectInfoStore, 'ProjectInfoStore')
 })

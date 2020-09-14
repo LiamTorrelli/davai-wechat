@@ -1,5 +1,6 @@
+// import { GitService } from '../../../services/gitService'
 // Services
-import { GitService } from '../../../services/gitService'
+import { DavaiCommit } from 'davai-commit'
 
 // Handlers
 import { logError } from '../../../handlers/outputHandler'
@@ -25,7 +26,7 @@ export const TAGGING = {
       const {
         code,
         ErrorMessage
-      } = await new GitService()
+      } = await new DavaiCommit.GitService()
         .createGitTag({
           description: cleanUpFromN(description),
           tagName

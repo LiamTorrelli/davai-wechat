@@ -18,11 +18,10 @@ import {
 
 async function loginWechatDevtools() {
   const { DEV_TOOLS_PATH } = FilesInfoStore
-  const { directory } = ShellArgumentsStore
 
   if (!DEV_TOOLS_PATH) throw new Error('DEV_TOOLS_PATH was not found')
 
-  const { isLoggedIn } = await WechatStore.loginIntoWechat({ DEV_TOOLS_PATH, directory })
+  const { isLoggedIn } = await WechatStore.loginIntoWechat({ DEV_TOOLS_PATH })
 
   return isLoggedIn
 }

@@ -55,6 +55,9 @@ const logThis = (msg = '', key) => {
   console.log('\n', chalk.yellow.bold(key), '\n')
   console.log(`${msg}\n`)
 }
+const log = (msg = '', key) => {
+  console.log('\n', chalk.yellow.bold(key), `${msg}`, '\n')
+}
 
 const logStoreValues = (store, storeName) => {
   console.log(`\n%s[ ${storeName} ]\n`, chalk.white.bold('Logging store: '))
@@ -97,6 +100,7 @@ class _Errors {
 }
 
 export {
+  log,
   _Errors,
   logICWT,
   logThis,

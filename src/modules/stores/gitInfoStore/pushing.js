@@ -1,5 +1,5 @@
 // Services
-import { GitService } from '../../../services/gitService'
+import { DavaiCommit } from 'davai-commit'
 
 // Handlers
 import { logError, logThis } from '../../../handlers/outputHandler'
@@ -15,7 +15,7 @@ export const PUSHING = {
       const {
         code,
         ErrorMessage
-      } = await new GitService()
+      } = await new DavaiCommit.GitService()
         .pushCommit({ branchName: cleanUpFromN(branchName) })
 
       if (code !== 0) throw new Error(ErrorMessage)
@@ -34,7 +34,7 @@ export const PUSHING = {
       const {
         code,
         ErrorMessage
-      } = await new GitService().pushAfterMerge({ branchName })
+      } = await new DavaiCommit.GitService().pushAfterMerge({ branchName })
 
       if (code !== 0) throw new Error(ErrorMessage)
 
@@ -50,7 +50,7 @@ export const PUSHING = {
       const {
         code,
         ErrorMessage
-      } = await new GitService().pushReleaseTag({ tagName })
+      } = await new DavaiCommit.GitService().pushReleaseTag({ tagName })
 
       if (code !== 0) throw new Error(ErrorMessage)
 

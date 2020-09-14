@@ -1,5 +1,5 @@
 // Libs
-import { observable, action, autorun } from 'mobx'
+import { observable, action } from 'mobx'
 import fs from 'fs'
 
 // Services
@@ -7,7 +7,7 @@ import { WechatService } from '../../services/wechatService'
 import { FilesService } from '../../services/filesService'
 
 // Handlers
-import { logError, logAutorun, logObject } from '../../handlers/outputHandler'
+import { logError } from '../../handlers/outputHandler'
 
 // Helpers
 import { cleanUpFromN } from '../../helpers/help'
@@ -16,16 +16,16 @@ export const WechatStore = observable({
   isLoggedIn: false,
   isPreviewGenerated: false,
 
-  async loginIntoWechat({ DEV_TOOLS_PATH, directory }) {
-    if (!DEV_TOOLS_PATH && !directory) return logError(
+  async loginIntoWechat({ DEV_TOOLS_PATH }) {
+    if (!DEV_TOOLS_PATH) return logError(
       'Login Wechat Devtools failed:',
-      'No DEV_TOOLS_PATH or directory was provided'
+      'No DEV_TOOLS_PATH was provided'
     )
     try {
       const {
         code,
         ErrorMessage
-      } = await new WechatService().loginWechatDevTools({ DEV_TOOLS_PATH, directory })
+      } = await new WechatService().loginWechatDevTools({ DEV_TOOLS_PATH })
 
       if (code !== 0) throw new Error(ErrorMessage)
 
@@ -157,9 +157,4 @@ export const WechatStore = observable({
 }, {
   loginIntoWechat: action,
   generatePreview: action
-})
-
-autorun(() => {
-  logAutorun('Wechat')
-  // logStoreValues(WechatStore, 'WechatStore')
 })

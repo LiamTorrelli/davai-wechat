@@ -1,5 +1,5 @@
 // Services
-import { GitService } from '../../../services/gitService'
+import { DavaiCommit } from 'davai-commit'
 
 // Handlers
 import { logError } from '../../../handlers/outputHandler'
@@ -15,7 +15,7 @@ export const MERGING = {
         result,
         code,
         ErrorMessage
-      } = await new GitService().mergeBranch(branchName)
+      } = await new DavaiCommit.GitService().mergeBranch(branchName)
 
       if (code !== 0) throw new Error(ErrorMessage)
 

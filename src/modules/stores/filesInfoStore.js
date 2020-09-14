@@ -4,7 +4,7 @@ import { observable, action, autorun } from 'mobx'
 import { ShellExecutor } from '../../controllers/shellExecutor'
 
 // Handlers
-import { logError, logAutorun, logStoreValues } from '../../handlers/outputHandler'
+import { logError } from '../../handlers/outputHandler'
 import { FilesService } from '../../services/filesService'
 
 // Helpers
@@ -17,10 +17,7 @@ export const FilesInfoStore = observable({
   STARTUP_BRANCH: [],
   VERSION_FILE: '',
   DEV_TOOLS_PATH: '',
-  FILES_TO_ADD_THEN_DELETE: [],
   FILES_TO_UPDATE_WITH_VERSION: [],
-  FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE: [],
-  FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE: [],
   GIT_RELEASE_BRANCH_NAME_BASE: '',
   GIT_RELEASE_TAG_NAME_BASE: '',
   DEFAULT_PAGE_PATH: '',
@@ -74,10 +71,7 @@ export const FilesInfoStore = observable({
         STARTUP_FILES,
         VERSION_FILE,
         DEV_TOOLS_PATH,
-        FILES_TO_ADD_THEN_DELETE,
         FILES_TO_UPDATE_WITH_VERSION,
-        FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE,
-        FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE,
         GIT_RELEASE_BRANCH_NAME_BASE,
         GIT_RELEASE_TAG_NAME_BASE
       } = config
@@ -85,28 +79,23 @@ export const FilesInfoStore = observable({
       if (!STARTUP_FILES
       || !VERSION_FILE
       || !DEV_TOOLS_PATH
-      || !FILES_TO_ADD_THEN_DELETE
       || !FILES_TO_UPDATE_WITH_VERSION
-      || !FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE
-      || !FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
       || !GIT_RELEASE_BRANCH_NAME_BASE
       || !GIT_RELEASE_TAG_NAME_BASE
-      ) return logError('Reading config file faild', 'Some params are missing')
+      ) return logError('Reading config file failed', 'Some params are missing')
 
       this.STARTUP_FILES = STARTUP_FILES
       this.VERSION_FILE = VERSION_FILE
       this.DEV_TOOLS_PATH = DEV_TOOLS_PATH
-      this.FILES_TO_ADD_THEN_DELETE = FILES_TO_ADD_THEN_DELETE
       this.FILES_TO_UPDATE_WITH_VERSION = FILES_TO_UPDATE_WITH_VERSION
-      this.FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE = FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE
-      this.FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE = FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
       this.GIT_RELEASE_BRANCH_NAME_BASE = GIT_RELEASE_BRANCH_NAME_BASE
       this.GIT_RELEASE_TAG_NAME_BASE = GIT_RELEASE_TAG_NAME_BASE
 
       try {
-        this.startupFilesExist = new FilesService()
-          .setFiles(STARTUP_FILES)
-          .existance
+        this.startupFilesExist = true
+        // this.startupFilesExist = new FilesService()
+        //   .setFiles(STARTUP_FILES)
+        //   .existance
 
         return this
       } catch (err) { return logError('Checking Files Existance failed:', err) }
@@ -126,26 +115,6 @@ export const FilesInfoStore = observable({
       'Getting Configuration File failed:',
       'There was a problem with a config file'
     )
-  },
-
-  async addProductionFiles(directory) {
-    if (!directory) return logError('Adding Production Files failed:', 'Project directory was not found')
-
-    const { FILES_TO_ADD_THEN_DELETE = [] } = this
-
-    if (FILES_TO_ADD_THEN_DELETE.length) {
-      try {
-        const isSuccesful = await new ShellExecutor()
-          .createFiles(directory, FILES_TO_ADD_THEN_DELETE)
-
-        this.productionFilesAdded = isSuccesful
-
-        return this
-      } catch (err) { return logError('Adding Production Files failed:', err) }
-    }
-
-    this.noProductionsFilesToAdd = true
-    return this
   },
 
   async deleteProductionFiles(directory) {
@@ -178,7 +147,7 @@ export const FilesInfoStore = observable({
       'Finding line failed:',
       '(directory | fileName | findBy | replaceBy) was not found'
     )
-    // FILES_TO_UPDATE_WITH_VERSION_NEW_RELEASE
+
     const replacedLine = await new FilesService().findAndChangeLineInFile({
       directory,
       fileName,
@@ -202,12 +171,11 @@ export const FilesInfoStore = observable({
     ) return logError('Updating Prod Files Version failed:', '(directory | oldVersion | newVersion was not found')
 
     const {
-      FILES_TO_UPDATE_WITH_VERSION,
-      FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
+      FILES_TO_UPDATE_WITH_VERSION
     } = this
+
     let filesToWrite = []
     if (type === 'production') filesToWrite = FILES_TO_UPDATE_WITH_VERSION
-    if (type === 'afterRelease') filesToWrite = FILES_TO_UPDATE_WITH_VERSION_AFTER_RELEASE
 
     const updatedSuccessfully = await new FilesService().updateFilesWithVersion({
       filesToWrite,
@@ -224,14 +192,8 @@ export const FilesInfoStore = observable({
   getConfigurationFile: action,
   checkFilesExistance: action,
   getStartupBranch: action,
-  addProductionFiles: action,
   deleteProductionFiles: action,
   updateFilesWithVersion: action,
   setIntegrationReleaseBranchBase: action,
   findAndChangeLineInFile: action
-})
-
-autorun(() => {
-  logAutorun('Files Info')
-  // logStoreValues(FilesInfoStore, 'FilesInfoStore')
 })

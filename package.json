@@ -1,6 +1,6 @@
 {
   "name": "davai-wechat",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Wechat deploy tools",
   "main": "src/cli.js",
   "bin": {
@@ -35,6 +35,7 @@
   "dependencies": {
     "arg": "^4.1.1",
     "chalk": "^2.4.2",
+    "davai-commit": "^2.0.4",
     "esm": "^3.2.25",
     "execa": "^2.0.4",
     "inquirer": "^7.0.0",

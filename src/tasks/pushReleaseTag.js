@@ -12,14 +12,14 @@ import { taskHandler } from '../handlers/taskHandler'
 import {
   GitInfoStore,
   ProjectInfoStore,
-  FilesInfoStore,
-  ShellArgumentsStore
+  FilesInfoStore
 } from '../modules/index'
 
 async function gitCreateTag() {
   try {
     const { newVersion, releaseDescription } = ProjectInfoStore
     const { GIT_RELEASE_TAG_NAME_BASE } = FilesInfoStore
+
     GitInfoStore.createTag({
       tagNameBase: GIT_RELEASE_TAG_NAME_BASE,
       version: newVersion,
@@ -36,20 +36,6 @@ async function handlePushTag() {
 
     return releaseTagPushed
   } catch (err) { console.warn('failed:', err); return false }
-}
-
-async function updateFilesWithVersionAfterRelease() {
-  const { oldVersion, newVersion } = ProjectInfoStore
-  const { directory } = ShellArgumentsStore
-
-  const { filesUpdatedWithVersion } = await FilesInfoStore.updateFilesWithVersion({
-    directory,
-    oldVersion,
-    newVersion,
-    type: 'afterRelease'
-  })
-
-  return filesUpdatedWithVersion
 }
 
 async function commitAfterPushingTag() {
@@ -92,10 +78,6 @@ export async function pushReleaseTag() {
     { /*  ** handlePushTag **  */
       task: () => taskHandler('handlePushTag', handlePushTag),
       title: tasks['handlePushTag'].title
-    },
-    { /*  ** updateFilesWithVersionAfterRelease **  */
-      task: () => taskHandler('updateFilesWithVersionAfterRelease', updateFilesWithVersionAfterRelease),
-      title: tasks['updateFilesWithVersionAfterRelease'].title
     },
     { /*  ** commitAfterPushingTag **  */
       task: () => taskHandler('commitAfterPushingTag', commitAfterPushingTag),

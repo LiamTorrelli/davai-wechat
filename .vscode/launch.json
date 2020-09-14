@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "name": "Debug app",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/davai-wechat",
+      "runtimeArgs": ["--inspect", "--experimental-modules"],
+      "args": ["release", "fix", "Description Yo!", "TEST-RELEASE-1.0.0"]
+    }
+  ]
+}

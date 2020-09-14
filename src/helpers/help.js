@@ -36,7 +36,7 @@ const upTheVersion = (oldVersion, releaseType) => {
   const [major, minor, patch] = oldVersion.split('.')
   const newVersion = `${major}.${(releaseType === 'feature') ? (Number(minor) + 1) : minor}.${(releaseType === 'fix') ? (Number(patch) + 1) : 0}
   `
-  return cleanUpSpaces(newVersion)
+  return cleanUpFromN(cleanUpSpaces(newVersion))
 }
 const parseMobxObjectIntoObject = obj => mapObjIndexed((val, k) => ({ val, k }), obj)
 const groupArrayByParam = (arr, params, lookingBy) => groupBy(smth => params.filter(p => p === smth[lookingBy]), arr)
