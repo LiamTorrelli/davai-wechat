@@ -26,7 +26,7 @@ import {
 } from './handlers/outputHandler'
 
 export async function cli(args) {
-  log('1.0.7', 'DAVAI WECHAT')
+  log('1.0.8', 'DAVAI WECHAT')
 
   try {
     await parseArgumentsIntoOptions(args)

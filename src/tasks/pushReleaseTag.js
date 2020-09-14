@@ -38,6 +38,19 @@ async function handlePushTag() {
   } catch (err) { console.warn('failed:', err); return false }
 }
 
+async function commitAfterPushingTag() {
+  const { currentBranch } = await GitInfoStore.setCurrentBranch()
+
+  if (currentBranch) {
+    try {
+      await GitInfoStore.pushCommit({ branchName: currentBranch })
+
+      return true
+    } catch (err) { console.warn('failed:', err); return false }
+  }
+  return false
+}
+
 export async function pushReleaseTag() {
   logInfo('Pushing release tag')
 
@@ -49,6 +62,10 @@ export async function pushReleaseTag() {
     { /*  ** handlePushTag **  */
       task: () => taskHandler('handlePushTag', handlePushTag),
       title: tasks['handlePushTag'].title
+    },
+    { /*  ** commitAfterPushingTag **  */
+      task: () => taskHandler('commitAfterPushingTag', commitAfterPushingTag),
+      title: tasks['commitAfterPushingTag'].title
     }
   ])
 
