@@ -52,9 +52,9 @@ export const ProjectInfoStore = observable({
       return this
     } catch (err) { return logError('Setting Old Version failed:', err) }
   },
-  setNewVersion(releaseType) {
+  setNewVersion() {
     try {
-      const newVersion = upTheVersion(this.oldVersion, releaseType)
+      const newVersion = this.oldVersion;
 
       if (!newVersion) return logError('Setting New Version failed:', 'Problem with release type or old version')
 

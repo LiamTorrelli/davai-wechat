@@ -68,10 +68,8 @@ export class FilesService {
       const resolvedFilePath = path.resolve(directory, newFile.fileName)
 
       if (__isEmpty(file.lookingFor)) {
-        // Updating the VERSION (type) file where there is just a plain version
         newFile = {
           ...file,
-          lookingFor: oldVersion,
           replacement: newVersion,
           oneLineFile: true
         }
@@ -136,6 +134,8 @@ export class FilesService {
       )
       return foundTheLine.includes(true)
     })
+
+    debugger
 
     return !isEverythingOk.includes(false)
   }

@@ -59,7 +59,7 @@ async function setProjectInfo() {
     ProjectInfoStore.setOldVersion(FilesInfoStore.VERSION_FILE)
     ProjectInfoStore.setReleaseType(releaseType)
     ProjectInfoStore.setReleaseDescription(description)
-    const { newVersion } = ProjectInfoStore.setNewVersion(releaseType) || {}
+    const { newVersion } = ProjectInfoStore.setNewVersion() || {}
 
     return newVersion
   }
@@ -77,20 +77,20 @@ export async function startUpTasks() {
       task: () => taskHandler('checkIfFilesExist', checkIfFilesExist),
       title: tasks['checkIfFilesExist'].title
     },
-    { /*  ** checkStartUpBranch **  */
-      task: () => taskHandler('checkStartUpBranch', checkStartUpBranch),
-      title: tasks['checkStartUpBranch'].title,
-      enabled: () => actionType === 'release' || actionType === 'create'
-    },
-    { /*  ** setStatusedFiles **  */
-      task: () => taskHandler('setStatusedFiles', setStatusedFiles),
-      title: tasks['setStatusedFiles'].title
-    },
-    { /*  ** checkForChanges **  */
-      task: () => taskHandler('checkForChanges', checkForChanges),
-      title: tasks['checkForChanges'].title,
-      enabled: () => actionType === 'release' || actionType === 'create'
-    },
+    // { /*  ** checkStartUpBranch **  */
+    //   task: () => taskHandler('checkStartUpBranch', checkStartUpBranch),
+    //   title: tasks['checkStartUpBranch'].title,
+    //   enabled: () => actionType === 'release' || actionType === 'create'
+    // },
+    // { /*  ** setStatusedFiles **  */
+    //   task: () => taskHandler('setStatusedFiles', setStatusedFiles),
+    //   title: tasks['setStatusedFiles'].title
+    // },
+    // { /*  ** checkForChanges **  */
+    //   task: () => taskHandler('checkForChanges', checkForChanges),
+    //   title: tasks['checkForChanges'].title,
+    //   enabled: () => actionType === 'release' || actionType === 'create'
+    // },
     { /*  ** setDeveloper **  */
       task: () => taskHandler('setDeveloper', setDeveloper),
       title: tasks['setDeveloper'].title
